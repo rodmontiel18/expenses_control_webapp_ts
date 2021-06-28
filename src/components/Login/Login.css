@@ -1,0 +1,76 @@
+.main-container {
+  padding-top: 48px;
+}
+
+#login-container {
+  background: white;
+  border-radius: 1em;
+  box-shadow: -5px 5px 15px #000;
+  display: flex;
+  flex-wrap: wrap;
+  height: 90%; 
+  /*left: 15%;
+  padding-left: 0px;
+  padding-right: 0px;
+  position: relative;*/
+  padding: 0;
+  width: auto;
+  border: 0px;
+  margin: 0 15% 0 15%;
+  min-height: 536px;
+}
+
+#login-box {
+  width: 100%;
+  border: 0px;
+  margin: 0px;
+}
+/*
+.login-data {
+  padding-top: 5%;
+}
+*/
+
+#login-container .react-datepicker-wrapper {
+  position: relative;
+  flex: 1 1 auto;
+  width: 1%;
+  margin-bottom: 0;
+}
+
+#login-container .form-row {
+  flex-wrap: nowrap;
+}
+
+/*------------------------------------------------------------------ */
+.login100-pic {
+  width: 316px;
+  height: 100%;
+}
+
+.login100-pic img {
+  max-width: 100%;
+  padding-top: 200px;
+  padding-left: 17%;
+}
+
+/*---------------------------------------------*/
+p {
+	font-family: Poppins-Regular;
+	font-size: 14px;
+	line-height: 1.7;
+	color: #666666;
+	margin: 0px;
+}
+
+ul, li {
+	margin: 0px;
+	list-style-type: none;
+}
+
+@media (max-width: 768px) {
+
+  .login100-pic {
+    display: none;
+  }
+}
