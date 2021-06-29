@@ -1,7 +1,7 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 
-interface Category {
+export interface Category {
     color: string;
     description: string;
     id: number;
@@ -92,8 +92,6 @@ export const {
     resetCategories,
 } = categorySlice.actions;
 
-export const categorySelector = (state: RootState) => state.category.category;
-export const categoriesSelector = (state: RootState) => state.category.categories;
-export const categoryErrorsSelector = (state: RootState) => state.category.categoryErrors;
+export const categorySelector = (state: RootState) => state.category;
 
 export default categorySlice.reducer;

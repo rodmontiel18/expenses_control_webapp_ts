@@ -1,38 +1,112 @@
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  font-family: Poppins-Regular, sans-serif;
+  background: #A7CFE8;
+}
+
 .App {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+.main-container {
+  padding-top: 48px;
+}
+
+.hidden {
+  display: none;
+}
+
+.input-error {
+  border-color: red;
+  color: darkred;
+}
+
+.card-container {
+  box-shadow: -5px 5px 15px #000;
+  margin: 40px 10% 3% 10%;
+  padding-bottom: 20px;
+  min-width: 550px;
+  width: auto;
+}
+
+.card-title {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.add-action-buttons {
+  float: right;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.add-action-buttons .add-button {
+  margin-left: 5px;
+}
+
+.no-results-table {
+  text-align: center;
+  font-size: 18px;
+}
+
+table th {
+  text-align: center;
+}
+
+.table .data-info > td p {
+  margin-top: 4px;
+}
+
+.table .data-info > td .btn-sm {
+  margin-bottom: 4px;
+}
+
+.tabs-container {
+  margin-bottom: 20px;
+}
+
+.tabs-container .all-tab-content {
+  margin-top: -1px;
+  border: 1px solid #dee2e6;
+  border-radius: 0 0 10px 10px;
+  padding: 15px;
+}
+
+.tabs-container input[type='text'] {
+  width: 118px;
+}
+
+.tabs-container .tab-content {
+  margin-top: 20px;
+}
+
+.tabs-container .nav-tabs {
+  margin-top: -1px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.range-inputs-container {
+  margin-left: 5px;
+  margin-bottom: 10px;
+}
+
+.range-inputs-container label {
+  margin: 0 5px 0 5px;
+}
+
+.range-inputs-container input[type='text']:last-child {
+  margin-left: 5px;
+}
+
+@media (max-width: 660px) {
+  .main-container {
+    width: 100%;
   }
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+  .card-container {
+    margin: 30px 0 0 0;
   }
 }
