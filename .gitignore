@@ -21,3 +21,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.devcontainer/devcontainer.json
+.devcontainer/Dockerfile
+.vscode/launch.json
