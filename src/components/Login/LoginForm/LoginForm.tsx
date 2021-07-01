@@ -1,20 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
-import PropTypes, { InferProps } from "prop-types";
+import { useForm } from "react-hook-form";
 
 import SuccessMsg from "../../Common/SuccessMessage";
 import { SimpleError } from "../../Common/Errors";
+import { setSpinnerVisibility } from "../../../reducers/appSlice";
+import { signSelector } from '../../../reducers/signSlice';
+import { signIn } from "../../../actions/signActions";
 
-function LoginForm({
-  signErrors,
-  signUpMsg,
-  userData,
-}: InferProps<typeof LoginForm.propTypes>) {
+type FormData = {
+  email: string;
+  password: string;
+};
+
+function LoginForm() {
+  const dispatch = useDispatch();
   const history = useHistory();
-
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
+  
+  const { signErrors, signUpMsg, userData} = useSelector(signSelector);
+  
   useEffect(function () {
-    // setSpinnerVisibility(false);
+    dispatch(setSpinnerVisibility(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -32,59 +45,11 @@ function LoginForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData]);
 
-  const setEmail = useState("")[1];
-  const [emailError, setEmailError] = useState(false);
-  const setPassword = useState("")[1];
-  const [passwordError, setPasswordError] = useState(false);
-
-  const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-
-    let emailError = false;
-
-    if (!e.currentTarget.value || !e.currentTarget.validity.valid) {
-      emailError = true;
-    }
-
-    setEmailError(emailError);
-    setEmail(e.currentTarget.value);
-  };
-
-  const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.currentTarget;
-    let passwordError = false;
-
-    if (!value) passwordError = true;
-
-    setPassword(value);
-    setPasswordError(passwordError);
-  };
-
-  /*
-  const login = (e: React.FormEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const emailInput = e.currentTarget.email;
-
-    let _emailError = false;
-    let _passwordError = false;
-
-    if (!email || !emailInput.validity.valid) {
-      _emailError = true;
-    }
-
-    if (!password) {
-      _passwordError = true;
-    }
-
-    if (_emailError || _passwordError) {
-      setEmailError(_emailError);
-      setPasswordError(passwordError);
-
-      return false;
-    }
-
-    signInRq(email, password);
-  }; */
+  const login = useCallback((formValues: FormData) => {
+    const { email, password } = formValues;
+    dispatch(signIn(email, password));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const renderErrorMsgs = () => {
     if (signErrors && signErrors.length > 0) {
@@ -104,7 +69,7 @@ function LoginForm({
       <form
         autoComplete="off"
         className="login100-form validate-form"
-        // onSubmit={login}
+        onSubmit={handleSubmit(login)}
       >
         <p
           className="h2 font-weight-bold text-center"
@@ -129,11 +94,14 @@ function LoginForm({
             </span>
           </div>
           <input
-            className={"form-control " + (emailError ? " input-error" : "")}
-            name="email"
-            onChange={changeEmail}
+            className={"form-control " + (errors?.email ? " input-error" : "")}
             type="email"
             placeholder="Email"
+            {...register("email", {
+              required: true,
+              pattern:
+                /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            })}
           />
         </div>
 
@@ -144,11 +112,14 @@ function LoginForm({
             </span>
           </div>
           <input
-            className={"form-control " + (passwordError ? " input-error" : "")}
-            name="password"
-            onChange={changePassword}
+            className={
+              "form-control " + (errors?.password ? " input-error" : "")
+            }
             type="password"
             placeholder="Password"
+            {...register("password", {
+              required: true,
+            })}
           />
         </div>
         <div style={{ left: -12, position: "relative", top: -10 }}>
@@ -204,13 +175,5 @@ function LoginForm({
     </div>
   );
 }
-
-LoginForm.propTypes = {
-  signErrors: PropTypes.array,
-  signUpMsg: PropTypes.string,
-  userData: PropTypes.shape({
-    token: PropTypes.string,
-  }),
-};
 
 export default LoginForm;

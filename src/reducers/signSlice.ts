@@ -64,8 +64,6 @@ export const {
     signUpSuccess,
 } = signSlice.actions;
 
-export const signErrors = (state: RootState) => state.sign.signErrors;
-export const signUpMsg = (state: RootState) => state.sign.signUpMsg;
-export const userData = (state: RootState) => state.sign.userData;
+export const signSelector = (state: RootState) => state.sign;
 
 export default signSlice.reducer;

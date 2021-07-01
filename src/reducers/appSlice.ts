@@ -1,3 +1,4 @@
+import type { RootState } from '../store'; 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface AppState {
@@ -19,5 +20,6 @@ export const appSlice = createSlice({
 });
 
 export const { setSpinnerVisibility } = appSlice.actions;
+export const appSelector= (state: RootState) => state.app;
 
 export default appSlice.reducer;

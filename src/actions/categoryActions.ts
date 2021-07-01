@@ -1,6 +1,11 @@
 import { AppThunk } from "../store";
 import { setSpinnerVisibility } from "../reducers/appSlice";
-import { Category, getUserCategoriesRq, getUserCategoriesSuccess } from "../reducers/categorySlice";
+import {
+  Category,
+  categoriesError,
+  getUserCategoriesRq,
+  getUserCategoriesSuccess,
+} from "../reducers/categorySlice";
 import axios from "../utilities/axiosConfig";
 
 const url = "/categories";
@@ -19,6 +24,8 @@ export const getUserCategories =
       const categories = await axios.get<Category[]>(`${url}/user`, options);
       dispatch(getUserCategoriesSuccess(categories.data));
     } catch (error) {
+      console.log(error);
+      dispatch(categoriesError(error));
     } finally {
       dispatch(setSpinnerVisibility(false));
     }
