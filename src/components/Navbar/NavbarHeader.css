@@ -1,0 +1,23 @@
+.navbar {
+  box-shadow: -2px 5px 11px #777272;
+}
+
+.navbar-brand {
+  font-size: 1.6rem;
+}
+
+#basic-nav-dropdown {
+  margin-right: 30px;
+}
+
+#basic-nav-dropdown .dropdown-toggle {
+  cursor: pointer;
+}
+
+#basic-nav-dropdown .dropdown-menu {
+  left: -32px;
+}
+
+#basic-nav-dropdown .dropdown-menu .link {
+  cursor: pointer;
+}

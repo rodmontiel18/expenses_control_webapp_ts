@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { categorySelector } from "../../reducers/categorySlice";
+import { signSelector } from "../../reducers/signSlice";
 import { getUserCategories } from "../../actions/categoryActions";
 
 import NoCategoriesMsg from "../Categories/NoCategoriesMsg/NoCategoriesMsg";
@@ -8,18 +9,17 @@ import NoCategoriesMsg from "../Categories/NoCategoriesMsg/NoCategoriesMsg";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const { categories, categoryErrors } = useSelector(categorySelector);
+  const { userData } = useSelector(signSelector);
   /* const _tempDate = new Date().getTime();
   const [endDate, setEndDate] = useState(_tempDate);
   const [startDate, setStartDate] = useState(_tempDate);
   const [startMonth, setStartMonth] = useState(_tempDate); */
 
   useEffect(() => {
-    dispatch(
-      getUserCategories(
-        "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJybWNyb2RyaWdvMUBnbWFpbC5jb20iLCJleHAiOjE2MjUwMzQ2NjYsImlhdCI6MTYyNTAxMzA2Nn0.PUIJgW5JibcMVEbbK7J-A4H8eauWjcrEfIdz-8-tnKn0fGXxyO4uvkFf3f7cvJQg8mUSsJ_Bx6rm7r02wP72mQ"
-      )
-    );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (userData?.token) {
+      dispatch(getUserCategories(userData.token));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (categoryErrors)
