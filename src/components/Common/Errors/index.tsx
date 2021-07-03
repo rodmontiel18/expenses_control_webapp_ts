@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
-import { Alert } from "react-bootstrap";
-import PropTypes, { InferProps } from "prop-types";
+import React, { useEffect } from 'react';
+import { Alert } from 'react-bootstrap';
+import PropTypes, { InferProps } from 'prop-types';
 
 export const NoResultsTable = () => {
   return (
@@ -11,11 +11,7 @@ export const NoResultsTable = () => {
   );
 };
 
-export function SimpleError({
-  callback,
-  errors,
-  timeout,
-}: InferProps<typeof SimpleError.propTypes>) {
+export function SimpleError({ callback, errors, timeout }: InferProps<typeof SimpleError.propTypes>) {
   // const [open, setOpen] = useState(show);
 
   useEffect(() => {
@@ -27,10 +23,7 @@ export function SimpleError({
   if (!errors || errors.length < 1) return null;
 
   return (
-    <div
-      className="collapse"
-      style={{ display: errors && errors.length > 0 ? "block" : "none" }}
-    >
+    <div className="collapse" style={{ display: errors && errors.length > 0 ? 'block' : 'none' }}>
       <div>
         <div className="alert alert-danger">
           {errors.map((error: string, index: number) => (
@@ -48,10 +41,7 @@ SimpleError.propTypes = {
   timeout: PropTypes.number,
 };
 
-export function SimpleClosableError({
-  onCloseFn,
-  errors,
-}: InferProps<typeof SimpleClosableError.propTypes>) {
+export function SimpleClosableError({ onCloseFn, errors }: InferProps<typeof SimpleClosableError.propTypes>) {
   if (!errors || errors.length < 1) return null;
 
   const handleOnClose = () => {

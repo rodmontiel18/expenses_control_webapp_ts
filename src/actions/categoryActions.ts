@@ -1,21 +1,16 @@
-import { AppThunk } from "../store";
-import { setSpinnerVisibility } from "../reducers/appSlice";
-import {
-  Category,
-  categoriesError,
-  getUserCategoriesRq,
-  getUserCategoriesSuccess,
-} from "../reducers/categorySlice";
-import axios from "../utilities/axiosConfig";
+import { AppThunk } from '../store';
+import { setSpinnerVisibility } from '../reducers/appSlice';
+import { Category, categoriesError, getUserCategoriesRq, getUserCategoriesSuccess } from '../reducers/categorySlice';
+import axios from '../utilities/axiosConfig';
 
-const url = "/categories";
+const url = '/categories';
 
 export const getUserCategories =
   (userToken: string): AppThunk =>
   async (dispatch) => {
     const options = {
       headers: {
-        Authorization: "Bearer " + userToken,
+        Authorization: 'Bearer ' + userToken,
       },
     };
     try {

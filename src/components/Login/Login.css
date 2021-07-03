@@ -8,7 +8,7 @@
   box-shadow: -5px 5px 15px #000;
   display: flex;
   flex-wrap: wrap;
-  height: 90%; 
+  height: 90%;
   /*left: 15%;
   padding-left: 0px;
   padding-right: 0px;
@@ -56,20 +56,20 @@
 
 /*---------------------------------------------*/
 p {
-	font-family: Poppins-Regular;
-	font-size: 14px;
-	line-height: 1.7;
-	color: #666666;
-	margin: 0px;
+  font-family: Poppins-Regular;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #666666;
+  margin: 0px;
 }
 
-ul, li {
-	margin: 0px;
-	list-style-type: none;
+ul,
+li {
+  margin: 0px;
+  list-style-type: none;
 }
 
 @media (max-width: 768px) {
-
   .login100-pic {
     display: none;
   }

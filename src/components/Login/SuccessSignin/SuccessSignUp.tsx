@@ -1,10 +1,10 @@
-import { useEffect } from "react";
-import { connect } from "react-redux";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { Alert } from "react-bootstrap";
+import { useEffect } from 'react';
+import { connect, useDispatch } from 'react-redux';
 
-import { setSpinnerVisibility } from "../../../reducers/appSlice";
+import { Link } from 'react-router-dom';
+import { Alert } from 'react-bootstrap';
+
+import { setSpinnerVisibility } from '../../../reducers/appSlice';
 
 function SuccessSignUp() {
   const dispatch = useDispatch();
@@ -16,8 +16,7 @@ function SuccessSignUp() {
   return (
     <div className="col m-4">
       <Alert variant="success">
-        Successful registration, please check your email to activate your
-        account.
+        Successful registration, please check your email to activate your account.
         <Link to="/signin"> Sign in</Link>
       </Alert>
     </div>

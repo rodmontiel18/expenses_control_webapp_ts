@@ -3,18 +3,18 @@ import { useDispatch } from 'react-redux';
 import { setSpinnerVisibility } from '../../reducers/appSlice';
 
 const NotFound = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    useEffect(function () {
-        dispatch(setSpinnerVisibility(false));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+  useEffect(function () {
+    dispatch(setSpinnerVisibility(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    return (
-        <div>
-            <h1>Pagina no encontrada</h1>
-        </div>
-    );
+  return (
+    <div>
+      <h1>Pagina no encontrada</h1>
+    </div>
+  );
 };
 
 export default NotFound;
