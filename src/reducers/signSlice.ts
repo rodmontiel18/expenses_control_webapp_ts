@@ -1,5 +1,5 @@
-import { CaseReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../store";
+import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from '../store';
 
 export interface SignUser {
   code: number;
@@ -25,10 +25,7 @@ const initialState: SignState = {
   userData: undefined,
 };
 
-const setUserDataFromAuthRd: CaseReducer<SignState, PayloadAction<SignUser>> = (
-  state,
-  action
-) => {
+const setUserDataFromAuthRd: CaseReducer<SignState, PayloadAction<SignUser>> = (state, action) => {
   state.userData = action.payload;
 };
 
@@ -38,7 +35,7 @@ const resetErrorRd: CaseReducer<SignState, PayloadAction> = (state) => {
 
 export const signSlice = createSlice({
   initialState,
-  name: "sign",
+  name: 'sign',
   reducers: {
     resetError: resetErrorRd,
     signUpRq: resetErrorRd,

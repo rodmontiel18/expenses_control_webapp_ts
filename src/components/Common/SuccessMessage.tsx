@@ -1,12 +1,7 @@
-import React, { useState } from "react";
-import PropTypes, { InferProps } from "prop-types";
+import React, { useState } from 'react';
+import PropTypes, { InferProps } from 'prop-types';
 
-function SuccessMsg({
-  callback,
-  msg,
-  show,
-  timeout,
-}: InferProps<typeof SuccessMsg.propTypes>) {
+function SuccessMsg({ callback, msg, show, timeout }: InferProps<typeof SuccessMsg.propTypes>) {
   const [open, setOpen] = useState(show);
   const vTimeout = useState(timeout || 5000)[0];
 

@@ -1,25 +1,25 @@
-import type { RootState } from '../store'; 
+import type { RootState } from '../store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface AppState {
-    spinnerVisibility: boolean;
+  spinnerVisibility: boolean;
 }
 
 const initialState: AppState = {
-    spinnerVisibility: true,
+  spinnerVisibility: true,
 };
 
 export const appSlice = createSlice({
-    name: 'app',
-    initialState,
-    reducers: {
-        setSpinnerVisibility: (state, action: PayloadAction<boolean>) => {
-            state.spinnerVisibility = action.payload;
-        },
+  name: 'app',
+  initialState,
+  reducers: {
+    setSpinnerVisibility: (state, action: PayloadAction<boolean>) => {
+      state.spinnerVisibility = action.payload;
     },
+  },
 });
 
 export const { setSpinnerVisibility } = appSlice.actions;
-export const appSelector= (state: RootState) => state.app;
+export const appSelector = (state: RootState) => state.app;
 
 export default appSlice.reducer;

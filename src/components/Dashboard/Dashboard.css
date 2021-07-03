@@ -15,7 +15,8 @@
 }
 
 @media (max-width: 550px) {
-  #balance-chart, #comp-charts {
+  #balance-chart,
+  #comp-charts {
     min-height: auto;
     margin-bottom: 10px;
   }

@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
-import Cookies from "js-cookie";
-import { useForm } from "react-hook-form";
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { useForm } from 'react-hook-form';
 
-import SuccessMsg from "../../Common/SuccessMessage";
-import { SimpleError } from "../../Common/Errors";
-import { setSpinnerVisibility } from "../../../reducers/appSlice";
+import SuccessMsg from '../../Common/SuccessMessage';
+import { SimpleError } from '../../Common/Errors';
+import { setSpinnerVisibility } from '../../../reducers/appSlice';
 import { signSelector } from '../../../reducers/signSlice';
-import { signIn } from "../../../actions/signActions";
+import { signIn } from '../../../actions/signActions';
 
 type FormData = {
   email: string;
@@ -23,9 +23,9 @@ function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-  
-  const { signErrors, signUpMsg, userData} = useSelector(signSelector);
-  
+
+  const { signErrors, signUpMsg, userData } = useSelector(signSelector);
+
   useEffect(function () {
     dispatch(setSpinnerVisibility(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -36,11 +36,11 @@ function LoginForm() {
       // const expiration = new Date(new Date().getTime() + 6 * 60 * 60 * 1000);
       console.log(new Date());
       const expiration = new Date(new Date().getTime() + 15 * 60 * 1000);
-      Cookies.set("userData", JSON.stringify(userData), {
+      Cookies.set('userData', JSON.stringify(userData), {
         expires: expiration,
-        path: "",
+        path: '',
       });
-      history.push("/");
+      history.push('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData]);
@@ -48,7 +48,7 @@ function LoginForm() {
   const login = useCallback((formValues: FormData) => {
     const { email, password } = formValues;
     dispatch(signIn(email, password));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderErrorMsgs = () => {
@@ -66,15 +66,8 @@ function LoginForm() {
 
   return (
     <div className="col m-4">
-      <form
-        autoComplete="off"
-        className="login100-form validate-form"
-        onSubmit={handleSubmit(login)}
-      >
-        <p
-          className="h2 font-weight-bold text-center"
-          style={{ marginBottom: 30 }}
-        >
+      <form autoComplete="off" className="login100-form validate-form" onSubmit={handleSubmit(login)}>
+        <p className="h2 font-weight-bold text-center" style={{ marginBottom: 30 }}>
           Member Login
         </p>
 
@@ -94,10 +87,10 @@ function LoginForm() {
             </span>
           </div>
           <input
-            className={"form-control " + (errors?.email ? " input-error" : "")}
+            className={'form-control ' + (errors?.email ? ' input-error' : '')}
             type="email"
             placeholder="Email"
-            {...register("email", {
+            {...register('email', {
               required: true,
               pattern:
                 /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -112,22 +105,16 @@ function LoginForm() {
             </span>
           </div>
           <input
-            className={
-              "form-control " + (errors?.password ? " input-error" : "")
-            }
+            className={'form-control ' + (errors?.password ? ' input-error' : '')}
             type="password"
             placeholder="Password"
-            {...register("password", {
+            {...register('password', {
               required: true,
             })}
           />
         </div>
-        <div style={{ left: -12, position: "relative", top: -10 }}>
-          <Link
-            className="btn btn-link"
-            style={{ fontSize: 13 }}
-            to="/reset-password"
-          >
+        <div style={{ left: -12, position: 'relative', top: -10 }}>
+          <Link className="btn btn-link" style={{ fontSize: 13 }} to="/reset-password">
             Did you forget your password?
           </Link>
         </div>
@@ -144,15 +131,12 @@ function LoginForm() {
         </div>
 
         <hr />
-        <div
-          className="text-center"
-          style={{ padding: 0, margin: "-28px 0 10px 0" }}
-        >
+        <div className="text-center" style={{ padding: 0, margin: '-28px 0 10px 0' }}>
           <span
             style={{
-              backgroundColor: "white",
-              padding: "0 10px 0 10px",
-              width: "fit-content",
+              backgroundColor: 'white',
+              padding: '0 10px 0 10px',
+              width: 'fit-content',
             }}
           >
             Or login with
@@ -165,10 +149,7 @@ function LoginForm() {
             href="https://github.com/login/oauth/authorize?client_id=63b665c5a28378d7c372&scope=user:email"
           >
             Github
-            <i
-              className="align-middle fab fa-github fa-2x"
-              style={{ paddingLeft: 10 }}
-            ></i>
+            <i className="align-middle fab fa-github fa-2x" style={{ paddingLeft: 10 }}></i>
           </a>
         </div>
       </form>

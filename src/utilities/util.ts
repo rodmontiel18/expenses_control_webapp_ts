@@ -1,15 +1,17 @@
-import { Action } from "@reduxjs/toolkit";
-import { ThunkDispatch } from "redux-thunk";
-import type { RootState } from "../store";
+import { Action, ActionCreatorWithPayload } from '@reduxjs/toolkit';
+import { ThunkDispatch } from 'redux-thunk';
+import type { RootState } from '../store';
 
 export const handleRequestError = (
+  // eslint-disable-next-line
   objToCheck: any,
+  // eslint-disable-next-line
   dispatch: ThunkDispatch<RootState, unknown, Action<any>>,
-  callbackFn: Function
+  callbackFn: ActionCreatorWithPayload<string[], string>,
 ) => {
   // catch way logic
 
-  if (objToCheck.hasOwnProperty("response")) {
+  if (objToCheck.hasOwnProperty('response')) {
     // objToCheck it's an error
 
     if (!objToCheck.response) {
@@ -19,12 +21,12 @@ export const handleRequestError = (
       }
     }
 
-    dispatch(callbackFn(["Something wrong happened"]));
+    dispatch(callbackFn(['Something wrong happened']));
     return false;
   }
   // objToCheck its a response object
-  if (!objToCheck.hasOwnProperty("data")) {
-    dispatch(callbackFn(["Something wrong happened"]));
+  if (!objToCheck.hasOwnProperty('data')) {
+    dispatch(callbackFn(['Something wrong happened']));
     return false;
   } else {
     if (!objToCheck.data.success && objToCheck.data.error) {

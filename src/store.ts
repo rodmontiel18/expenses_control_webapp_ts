@@ -8,11 +8,11 @@ import rootReducer from './reducers';
 export const history = createBrowserHistory();
 
 export const store = configureStore({
-    reducer: rootReducer(history),
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(checkLoginMiddleware),
+  reducer: rootReducer(history),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(checkLoginMiddleware),
 });
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-export type AppThunk = ThunkAction<void, RootState, unknown, Action>
+export type AppThunk = ThunkAction<void, RootState, unknown, Action>;

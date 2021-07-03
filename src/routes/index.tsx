@@ -1,10 +1,10 @@
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route } from 'react-router-dom';
 
-import Dashboard from "../components/Dashboard/Dashboard";
-import Login from "../components/Login/Login";
-import LoginForm from "../components/Login/LoginForm/LoginForm";
-import NotFound from "../components/Common/NotFound";
-import NewUserForm from "../components/Login/NewUserForm/NewUserForm";
+import Dashboard from '../components/Dashboard/Dashboard';
+import Login from '../components/Login/Login';
+import LoginForm from '../components/Login/LoginForm/LoginForm';
+import NotFound from '../components/Common/NotFound';
+import NewUserForm from '../components/Login/NewUserForm/NewUserForm';
 
 const Routes = () => {
   return (

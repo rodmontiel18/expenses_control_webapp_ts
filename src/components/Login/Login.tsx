@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import "./Login.css";
+import './Login.css';
 
 const Login: React.FC = ({ children }) => {
   return (
@@ -15,13 +15,13 @@ const Login: React.FC = ({ children }) => {
           <div
             className="row"
             style={{
-              height: "84%",
-              marginTop: "8%",
+              height: '84%',
+              marginTop: '8%',
               minHeight: 536,
             }}
           >
-            {" "}
-            {children}{" "}
+            {' '}
+            {children}{' '}
           </div>
         </div>
       </div>

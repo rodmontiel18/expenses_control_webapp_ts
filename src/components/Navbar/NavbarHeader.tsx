@@ -1,13 +1,12 @@
-import React, { SyntheticEvent } from "react";
-import PropTypes from "prop-types";
-import { connect, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import Cookies from "js-cookie";
-import { Nav, Navbar, NavDropdown } from "react-bootstrap";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
-import { signSelector } from "../../reducers/signSlice";
+import { signSelector } from '../../reducers/signSlice';
 
-import "./NavbarHeader.css";
+import './NavbarHeader.css';
 
 const NavbarHeader = () => {
   const location = useLocation();
@@ -15,7 +14,7 @@ const NavbarHeader = () => {
 
   const logout = (e: React.MouseEvent) => {
     e.preventDefault();
-    Cookies.remove("userData", { path: "" });
+    Cookies.remove('userData', { path: '' });
     window.location.reload();
   };
 
@@ -28,26 +27,17 @@ const NavbarHeader = () => {
         <Navbar.Toggle />
         <Navbar.Collapse id="basic-navbar">
           <Nav className="mr-auto">
-            <Nav.Link
-              className={location.pathname === "/categories" ? "active" : ""}
-              href="/categories"
-            >
+            <Nav.Link className={location.pathname === '/categories' ? 'active' : ''} href="/categories">
               Categories
             </Nav.Link>
-            <Nav.Link
-              className={location.pathname === "/expenses" ? "active" : ""}
-              href="/expenses"
-            >
+            <Nav.Link className={location.pathname === '/expenses' ? 'active' : ''} href="/expenses">
               Expenses
             </Nav.Link>
-            <Nav.Link
-              className={location.pathname === "/incomes" ? "active " : ""}
-              href="/incomes"
-            >
+            <Nav.Link className={location.pathname === '/incomes' ? 'active ' : ''} href="/incomes">
               Incomes
             </Nav.Link>
           </Nav>
-          <NavDropdown title={userData?.name || ""} id="basic-nav-dropdown">
+          <NavDropdown title={userData?.name || ''} id="basic-nav-dropdown">
             <NavDropdown.Item href="/my-account">My account</NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item onClick={logout}>Sign out</NavDropdown.Item>
