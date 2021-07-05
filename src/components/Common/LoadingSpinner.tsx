@@ -1,9 +1,11 @@
+import { FC, ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { appSelector } from '../../reducers/appSlice';
 
-const LoadingSpinner = () => {
+const LoadingSpinner: FC = (): ReactElement => {
   const topPosition: number = window.innerHeight / 2 - 40;
   const { spinnerVisibility } = useSelector(appSelector);
+
   return (
     <div
       style={{

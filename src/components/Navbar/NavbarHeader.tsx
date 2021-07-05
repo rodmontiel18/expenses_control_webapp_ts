@@ -1,24 +1,26 @@
-import React from 'react';
+import { FC, MouseEvent, ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Location } from 'history';
 
 import { signSelector } from '../../reducers/signSlice';
 
+import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
+
 import './NavbarHeader.css';
 
-const NavbarHeader = () => {
-  const location = useLocation();
+const NavbarHeader: FC = (): ReactElement => {
+  const location: Location = useLocation();
   const { userData } = useSelector(signSelector);
 
-  const logout = (e: React.MouseEvent) => {
+  const logout = (e: MouseEvent): void => {
     e.preventDefault();
     Cookies.remove('userData', { path: '' });
     window.location.reload();
   };
 
-  const renderNavbar = () => {
+  const renderNavbar = (): JSX.Element => {
     return (
       <Navbar bg="light" expand="lg" fixed="top">
         <Navbar.Brand className="font-weight-bold" href="/">
@@ -47,9 +49,9 @@ const NavbarHeader = () => {
     );
   };
 
-  const lNavbar = userData && userData.token ? renderNavbar() : null;
+  const lNavbar: JSX.Element | null = userData && userData.token ? renderNavbar() : null;
 
-  return <React.Fragment>{lNavbar}</React.Fragment>;
+  return <>{lNavbar}</>;
 };
 
 export default NavbarHeader;

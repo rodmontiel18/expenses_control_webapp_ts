@@ -1,13 +1,16 @@
-import { useEffect } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { FC, ReactElement, useEffect } from 'react';
+import { RootState, useAppDispatch } from '../../../store';
 
 import { Link } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
 
 import { setSpinnerVisibility } from '../../../reducers/appSlice';
+import { ThunkDispatch } from 'redux-thunk';
+import { Action } from '@reduxjs/toolkit';
 
-function SuccessSignUp() {
-  const dispatch = useDispatch();
+const SuccessSignUp: FC = (): ReactElement => {
+  const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
+
   useEffect(() => {
     dispatch(setSpinnerVisibility(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -21,6 +24,6 @@ function SuccessSignUp() {
       </Alert>
     </div>
   );
-}
+};
 
-export default connect(null, { setSpinnerVisibility })(SuccessSignUp);
+export default SuccessSignUp;

@@ -1,13 +1,17 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { Action } from '@reduxjs/toolkit';
+import { FC, ReactElement, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
+
+import { RootState, useAppDispatch } from '../../store';
 import { categorySelector } from '../../reducers/categorySlice';
 import { signSelector } from '../../reducers/signSlice';
 import { getUserCategories } from '../../actions/categoryActions';
 
 import NoCategoriesMsg from '../Categories/NoCategoriesMsg/NoCategoriesMsg';
 
-const Dashboard = () => {
-  const dispatch = useDispatch();
+const Dashboard: FC = (): ReactElement => {
+  const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
   const { categories, categoryErrors } = useSelector(categorySelector);
   const { userData } = useSelector(signSelector);
   /* const _tempDate = new Date().getTime();

@@ -1,23 +1,29 @@
-import React, { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import { Action } from '@reduxjs/toolkit';
+import { FC, ReactElement, useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import { ThunkDispatch } from 'redux-thunk';
+import { History } from 'history';
+import Cookies from 'js-cookie';
 
-import SuccessMsg from '../../Common/SuccessMessage';
-import { SimpleError } from '../../Common/Errors';
+import { RootState, useAppDispatch } from '../../../store';
 import { setSpinnerVisibility } from '../../../reducers/appSlice';
 import { signSelector } from '../../../reducers/signSlice';
 import { signIn } from '../../../actions/signActions';
+
+import SuccessMsg from '../../Common/SuccessMessage';
+import { SimpleError } from '../../Common/Errors';
 
 type FormData = {
   email: string;
   password: string;
 };
 
-function LoginForm() {
-  const dispatch = useDispatch();
-  const history = useHistory();
+const LoginForm: FC = (): ReactElement => {
+  const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
+  const history: History = useHistory();
+
   const {
     register,
     handleSubmit,
@@ -33,9 +39,8 @@ function LoginForm() {
 
   useEffect(() => {
     if (userData && userData.token) {
-      // const expiration = new Date(new Date().getTime() + 6 * 60 * 60 * 1000);
-      console.log(new Date());
-      const expiration = new Date(new Date().getTime() + 15 * 60 * 1000);
+      const expiration = new Date(new Date().getTime() + 6 * 60 * 60 * 1000);
+      // const expiration: Date = new Date(new Date().getTime() + 15 * 60 * 1000);
       Cookies.set('userData', JSON.stringify(userData), {
         expires: expiration,
         path: '',
@@ -45,13 +50,13 @@ function LoginForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData]);
 
-  const login = useCallback((formValues: FormData) => {
+  const login = useCallback((formValues: FormData): void => {
     const { email, password } = formValues;
     dispatch(signIn(email, password));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const renderErrorMsgs = () => {
+  const renderErrorMsgs = (): JSX.Element => {
     if (signErrors && signErrors.length > 0) {
       return (
         <SimpleError
@@ -61,7 +66,7 @@ function LoginForm() {
         />
       );
     }
-    return null;
+    return <></>;
   };
 
   return (
@@ -71,12 +76,7 @@ function LoginForm() {
           Member Login
         </p>
 
-        <SuccessMsg
-          // callback={resetSuccessMsg}
-          msg={signUpMsg}
-          show={true}
-          timeout={5000}
-        />
+        <SuccessMsg msg={signUpMsg} show={true} timeout={5000} />
 
         {renderErrorMsgs()}
 
@@ -155,6 +155,6 @@ function LoginForm() {
       </form>
     </div>
   );
-}
+};
 
 export default LoginForm;

@@ -1,22 +1,11 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
-
-export interface SignUser {
-  code: number;
-  birthday: string;
-  email: string;
-  genre: string;
-  id: number;
-  lastname: string;
-  name: string;
-  password: string;
-  token: string;
-}
+import { User } from './userSlice';
 
 interface SignState {
   signErrors?: string[];
   signUpMsg?: string;
-  userData?: SignUser;
+  userData?: User;
 }
 
 const initialState: SignState = {
@@ -25,11 +14,11 @@ const initialState: SignState = {
   userData: undefined,
 };
 
-const setUserDataFromAuthRd: CaseReducer<SignState, PayloadAction<SignUser>> = (state, action) => {
+const setUserDataFromAuthRd: CaseReducer<SignState, PayloadAction<User>> = (state, action): void => {
   state.userData = action.payload;
 };
 
-const resetErrorRd: CaseReducer<SignState, PayloadAction> = (state) => {
+const resetErrorRd: CaseReducer<SignState, PayloadAction> = (state): void => {
   state.signErrors = undefined;
 };
 
@@ -45,7 +34,7 @@ export const signSlice = createSlice({
     setUserDataFromStorage: setUserDataFromAuthRd,
     setUserDataFromAuth: setUserDataFromAuthRd,
     signInSuccess: setUserDataFromAuthRd,
-    signError: (state, action: PayloadAction<string[]>) => {
+    signError: (state, action: PayloadAction<string[]>): void => {
       state.signErrors = action.payload;
       state.userData = undefined;
     },
@@ -53,7 +42,7 @@ export const signSlice = createSlice({
       state.signErrors = undefined;
       state.userData = undefined;
     },
-    signUpSuccess: (state, action: PayloadAction<string>) => {
+    signUpSuccess: (state, action: PayloadAction<string>): void => {
       state.signUpMsg = action.payload;
     },
   },

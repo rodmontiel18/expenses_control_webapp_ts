@@ -27,9 +27,15 @@ const checkLoginMiddleware = (store) => (next) => (action) => {
 
   if (!userData || !userData.token) {
     if (
-      ['/signin', '/signup', '/success-signin', '/confirm-account', '/reset-password', '/reset-password-form'].indexOf(
-        location.pathname,
-      ) < 0
+      [
+        '/github-login',
+        '/signin',
+        '/signup',
+        '/success-signin',
+        '/confirm-account',
+        '/reset-password',
+        '/reset-password-form',
+      ].indexOf(location.pathname) < 0
     )
       history.push('/signin');
   }

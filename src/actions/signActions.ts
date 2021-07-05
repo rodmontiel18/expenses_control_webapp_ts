@@ -1,20 +1,19 @@
 import base64 from 'base-64';
 import { History } from 'history';
 
-import { AppThunk } from '../store';
-import type { RootState } from '../store';
+import { AppThunk, RootState } from '../store';
 import axios from '../utilities/axiosConfig';
 
 import { setSpinnerVisibility } from '../reducers/appSlice';
-import { signInRq, signError, signInSuccess, SignUser } from '../reducers/signSlice';
+import { signInRq, signError, signInSuccess, signUpSuccess } from '../reducers/signSlice';
+import { User } from '../reducers/userSlice';
 import { handleRequestError } from '../utilities/util';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action } from '@reduxjs/toolkit';
 
 export const signIn =
   (email: string, password: string): AppThunk =>
-  // eslint-disable-next-line
-  async (dispatch: ThunkDispatch<RootState, unknown, Action<any>>) => {
+  async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     const options = {
       headers: {
         Authorization: 'Basic ' + base64.encode(email + ':' + password),
@@ -24,7 +23,7 @@ export const signIn =
     try {
       dispatch(setSpinnerVisibility(true));
       dispatch(signInRq());
-      const response = await axios.get<SignUser>('/signin', options);
+      const response = await axios.get<User>('/signin', options);
       if (handleRequestError(response, dispatch, signError)) {
         dispatch(signInSuccess(response.data));
       }
@@ -36,46 +35,39 @@ export const signIn =
   };
 
 export const githubSign =
-  // eslint-disable-next-line
-
-
-    (code: string, history: History): AppThunk =>
-    // eslint-disable-next-line
-    async (dispatch: ThunkDispatch<RootState, unknown, Action<any>>) => {
-      dispatch(setSpinnerVisibility(true));
-      try {
-        const response = await axios.get<SignUser>(`/signin/oauth/github/${code}`);
-        if (handleRequestError(response, dispatch, signError)) {
-          dispatch(signInSuccess(response.data));
-          if (response.data.code !== 119) {
-            history.push('/signin');
-          }
-        } else {
+  (code: string, history: History): AppThunk =>
+  async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+    dispatch(setSpinnerVisibility(true));
+    try {
+      const response = await axios.get<User>(`/signin/oauth/github/${code}`);
+      if (handleRequestError(response, dispatch, signError)) {
+        dispatch(signInSuccess(response.data));
+        if (response.data.code !== 119) {
           history.push('/signin');
         }
-      } catch (error) {
-        handleRequestError(error, dispatch, signError);
-      } finally {
-        dispatch(setSpinnerVisibility(false));
+      } else {
+        history.push('/signin');
       }
-    };
+    } catch (error) {
+      handleRequestError(error, dispatch, signError);
+    } finally {
+      dispatch(setSpinnerVisibility(false));
+    }
+  };
 
 export const signUp =
-  // eslint-disable-next-line
-
-
-    (user: SignUser, history: History): AppThunk =>
-    // eslint-disable-next-line
-    async (dispatch: ThunkDispatch<RootState, unknown, Action<any>>) => {
-      dispatch(setSpinnerVisibility(true));
-      try {
-        const response = await axios.post('/signup', user);
-        if (handleRequestError(response, dispatch, signError)) {
-          history.push('/success-signin');
-        }
-      } catch (error) {
-        handleRequestError(error, dispatch, signError);
-      } finally {
-        dispatch(setSpinnerVisibility(false));
+  (user: User, history: History): AppThunk =>
+  async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+    dispatch(setSpinnerVisibility(true));
+    try {
+      const response = await axios.post('/signup', user);
+      if (handleRequestError(response, dispatch, signError)) {
+        dispatch(signUpSuccess(response.data));
+        history.push('/success-signin');
       }
-    };
+    } catch (error) {
+      handleRequestError(error, dispatch, signError);
+    } finally {
+      dispatch(setSpinnerVisibility(false));
+    }
+  };

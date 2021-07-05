@@ -1,7 +1,7 @@
-import React from 'react';
+import { FC, ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 
-const NoCategoriesMsg = () => {
+const NoCategoriesMsg: FC = (): ReactElement => {
   return (
     <div className="alert alert-danger" style={{ margin: '40px 8% 0 8%' }}>
       To begin we need to add at least one category, you can do it

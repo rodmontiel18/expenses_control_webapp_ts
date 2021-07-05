@@ -1,18 +1,25 @@
-import React, { useState } from 'react';
-import PropTypes, { InferProps } from 'prop-types';
+import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit';
+import { FC, ReactElement, useState } from 'react';
 
-function SuccessMsg({ callback, msg, show, timeout }: InferProps<typeof SuccessMsg.propTypes>) {
+interface SuccessMsgProps {
+  callbackFn?: ActionCreatorWithoutPayload;
+  msg?: string;
+  show: boolean;
+  timeout?: number;
+}
+
+const SuccessMsg: FC<SuccessMsgProps> = ({ callbackFn, msg, show, timeout }): ReactElement => {
   const [open, setOpen] = useState(show);
-  const vTimeout = useState(timeout || 5000)[0];
+  const vTimeout: number = useState(timeout || 5000)[0];
 
-  const hideMsg = () => {
+  const hideMsg = (): void => {
     if (open)
       setTimeout(() => {
         setOpen(false);
-        if (callback) callback();
+        if (callbackFn) callbackFn();
       }, vTimeout);
   };
-  if (!msg) return null;
+  if (!msg) return <></>;
 
   return (
     <div className="collapse">
@@ -24,13 +31,6 @@ function SuccessMsg({ callback, msg, show, timeout }: InferProps<typeof SuccessM
       </div>
     </div>
   );
-}
-
-SuccessMsg.propTypes = {
-  callback: PropTypes.func,
-  msg: PropTypes.string,
-  show: PropTypes.bool,
-  timeout: PropTypes.number,
 };
 
 export default SuccessMsg;

@@ -1,26 +1,32 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react';
+import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit';
+import { FC, ReactElement, useEffect } from 'react';
 import { Alert } from 'react-bootstrap';
-import PropTypes, { InferProps } from 'prop-types';
 
-export const NoResultsTable = () => {
+export const NoResultsTable: FC = (): ReactElement => {
   return (
     <div className="no-results-table">
-      <p>No se encontraron resultados</p>
+      <p>No results found</p>
     </div>
   );
 };
 
-export function SimpleError({ callback, errors, timeout }: InferProps<typeof SimpleError.propTypes>) {
+interface SimpleErrorProps {
+  callbackFn?: ActionCreatorWithoutPayload;
+  errors: string[];
+  timeout: number;
+}
+
+export const SimpleError: FC<SimpleErrorProps> = ({ callbackFn, errors, timeout }): ReactElement => {
   // const [open, setOpen] = useState(show);
 
   useEffect(() => {
     setTimeout(() => {
-      if (callback) callback();
+      if (callbackFn) callbackFn();
     }, timeout || 5000);
   }, []);
 
-  if (!errors || errors.length < 1) return null;
+  if (!errors || errors.length < 1) return <></>;
 
   return (
     <div className="collapse" style={{ display: errors && errors.length > 0 ? 'block' : 'none' }}>
@@ -33,18 +39,17 @@ export function SimpleError({ callback, errors, timeout }: InferProps<typeof Sim
       </div>
     </div>
   );
-}
-
-SimpleError.propTypes = {
-  callback: PropTypes.func,
-  errors: PropTypes.array,
-  timeout: PropTypes.number,
 };
 
-export function SimpleClosableError({ onCloseFn, errors }: InferProps<typeof SimpleClosableError.propTypes>) {
-  if (!errors || errors.length < 1) return null;
+interface SimpleClosableErrorProps {
+  onCloseFn?: ActionCreatorWithoutPayload;
+  errors: string[];
+}
 
-  const handleOnClose = () => {
+export const SimpleClosableError: FC<SimpleClosableErrorProps> = ({ onCloseFn, errors }): ReactElement => {
+  if (!errors || errors.length < 1) return <></>;
+
+  const handleOnClose = (): void => {
     if (onCloseFn) onCloseFn();
   };
 
@@ -55,9 +60,4 @@ export function SimpleClosableError({ onCloseFn, errors }: InferProps<typeof Sim
       ))}
     </Alert>
   );
-}
-
-SimpleClosableError.propTypes = {
-  onCloseFn: PropTypes.func,
-  errors: PropTypes.array,
 };

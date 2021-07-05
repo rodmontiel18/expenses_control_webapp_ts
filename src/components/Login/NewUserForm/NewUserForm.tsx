@@ -1,24 +1,20 @@
-import React, { SetStateAction, useEffect, useState } from 'react';
+import { Action } from '@reduxjs/toolkit';
+import { ChangeEvent, Dispatch, FC, FormEvent, ReactElement, SetStateAction, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { ThunkDispatch } from 'redux-thunk';
+import { Link, useHistory } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { History } from 'history';
 
-import { SimpleError } from '../../Common/Errors';
-
 import { RootState, useAppDispatch } from '../../../store';
 import { setSpinnerVisibility } from '../../../reducers/appSlice';
-import { resetError, signSelector, SignUser } from '../../../reducers/signSlice';
+import { resetError, signSelector } from '../../../reducers/signSlice';
+import { User } from '../../../reducers/userSlice';
+import { signUp } from '../../../actions/signActions';
 
-import { githubSign, signUp } from '../../../actions/signActions';
-import { ThunkDispatch } from 'redux-thunk';
-import { Action } from '@reduxjs/toolkit';
+import { SimpleError } from '../../Common/Errors';
 
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
-
-const NewUserForm = () => {
+const NewUserForm: FC = (): ReactElement => {
   const today: Date = new Date();
   const year: number = today.getFullYear();
   const month: number = today.getMonth();
@@ -27,7 +23,8 @@ const NewUserForm = () => {
   const minDate: Date = new Date(year - 150, month, day);
 
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
-  const history: History<unknown> = useHistory();
+  const history: History = useHistory();
+
   const { signErrors, userData } = useSelector(signSelector);
 
   const [birthday, setBirthday] = useState(maxDate);
@@ -45,10 +42,10 @@ const NewUserForm = () => {
   const [pwdError, setPwdError] = useState(false);
 
   // eslint-disable-next-line
-  const stateSetters: Map<string, React.Dispatch<SetStateAction<any>>> = new Map<
+  const stateSetters: Map<string, Dispatch<SetStateAction<any>>> = new Map<
     string,
     // eslint-disable-next-line
-    React.Dispatch<SetStateAction<any>>
+    Dispatch<SetStateAction<any>>
   >([
     ['birthday', setBirthday],
     ['birthdayError', setBirthdayError],
@@ -66,13 +63,12 @@ const NewUserForm = () => {
   ]);
 
   const strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#_$%^&*])(?=.{8,})');
-
-  const queryFinder: URLSearchParams = useQuery();
+  const emailRegex = new RegExp(
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+  );
 
   useEffect(() => {
-    const code: string = queryFinder.get('code') || '';
-    if (!code) dispatch(setSpinnerVisibility(false));
-    else dispatch(githubSign(code, history));
+    dispatch(setSpinnerVisibility(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -85,7 +81,7 @@ const NewUserForm = () => {
     }
   }, [userData]);
 
-  const createUser = (e: React.FormEvent<HTMLFormElement>) => {
+  const createUser = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
     let lBirthdayError = false,
@@ -111,24 +107,24 @@ const NewUserForm = () => {
     setLastnameError(lLastnameError);
     setPwdError(lPwdError);
 
-    if (lBirthdayError || lCPwdError || lEmailError || lNameError || lLastnameError || lPwdError) return false;
+    if (!lBirthdayError && !lCPwdError && !lEmailError && !lNameError && !lLastnameError && !lPwdError) {
+      const user: User = {
+        code: 0,
+        birthday: lBirthday.getTime().toString(),
+        email: email,
+        genre,
+        id: 0,
+        name,
+        lastname,
+        password: pwd,
+        token: '',
+      };
 
-    const user: SignUser = {
-      code: 0,
-      birthday: lBirthday.getTime().toString(),
-      email: email,
-      genre,
-      id: 0,
-      name,
-      lastname,
-      password: pwd,
-      token: '',
-    };
-
-    dispatch(signUp(user, history));
+      dispatch(signUp(user, history));
+    }
   };
 
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>): void => {
     if (e.target.type !== 'radio') e.preventDefault();
 
     const { name, value } = e.target;
@@ -141,23 +137,20 @@ const NewUserForm = () => {
         setEmail(value);
         setEmailError(false);
       }
-      return;
     }
 
     if (name === 'pwd') {
       handleChangePwd(e);
-      return;
     }
 
     if (name === 'cPwd') {
       handleChangeCPwd(e);
-      return;
     }
 
     // eslint-disable-next-line
-    const valSetter: React.Dispatch<any> | undefined = stateSetters.get(name);
+    const valSetter: Dispatch<any> | undefined = stateSetters.get(name);
     // eslint-disable-next-line
-    const errorSetter: React.Dispatch<any> | undefined = stateSetters.get(name + 'Error');
+    const errorSetter: Dispatch<any> | undefined = stateSetters.get(name + 'Error');
     if (valSetter) valSetter(value);
 
     if (!value) {
@@ -167,7 +160,7 @@ const NewUserForm = () => {
     }
   };
 
-  const handleChangePwd = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangePwd = (e: ChangeEvent<HTMLInputElement>): void => {
     const pwd: string = e.target.value;
     if (validatePassword(pwd)) {
       setPwd(pwd);
@@ -178,7 +171,7 @@ const NewUserForm = () => {
     }
   };
 
-  const handleChangeCPwd = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeCPwd = (e: ChangeEvent<HTMLInputElement>): void => {
     const cPwd: string = e.target.value;
     if (validateCPassword(cPwd)) {
       setCPwd(cPwd);
@@ -189,30 +182,27 @@ const NewUserForm = () => {
     }
   };
 
-  const handleDateChange = (date: Date) => {
+  const handleDateChange = (date: Date): void => {
     setBirthday(date);
   };
 
-  const renderErrors = () => {
+  const renderErrors = (): JSX.Element => {
     if (signErrors && signErrors.length > 0)
-      return <SimpleError errors={signErrors} callback={resetError} timeout={5000} />;
-    return null;
+      return <SimpleError errors={signErrors} callbackFn={resetError} timeout={5000} />;
+    return <></>;
   };
 
-  const validateEmail = (val: string) => {
-    const emailRegex = new RegExp(
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-    );
+  const validateEmail = (val: string): boolean => {
     if (!val || !emailRegex.test(val)) return false;
     return true;
   };
 
-  const validatePassword = (pwd: string) => {
+  const validatePassword = (pwd: string): boolean => {
     if (!pwd || !strongRegex.test(pwd)) return false;
     return true;
   };
 
-  const validateCPassword = (cPwd: string) => {
+  const validateCPassword = (cPwd: string): boolean => {
     if (!cPwd || cPwd !== pwd.toString()) return false;
     return true;
   };
