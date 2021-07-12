@@ -12,7 +12,8 @@ export const NoResultsTable: FC = (): ReactElement => {
 };
 
 interface SimpleErrorProps {
-  callbackFn?: ActionCreatorWithoutPayload;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  callbackFn?: Function;
   errors: string[];
   timeout: number;
 }

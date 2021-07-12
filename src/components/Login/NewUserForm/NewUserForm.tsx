@@ -9,7 +9,7 @@ import { History } from 'history';
 import { RootState, useAppDispatch } from '../../../store';
 import { setSpinnerVisibility } from '../../../reducers/appSlice';
 import { resetError, signSelector } from '../../../reducers/signSlice';
-import { User } from '../../../reducers/userSlice';
+import { User } from '../../../models/user';
 import { signUp } from '../../../actions/signActions';
 
 import { SimpleError } from '../../Common/Errors';
@@ -27,19 +27,19 @@ const NewUserForm: FC = (): ReactElement => {
 
   const { signErrors, userData } = useSelector(signSelector);
 
-  const [birthday, setBirthday] = useState(maxDate);
-  const [birthdayError, setBirthdayError] = useState(false);
-  const [cPwd, setCPwd] = useState('');
-  const [cPwdError, setCPwdError] = useState(false);
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState(false);
-  const [genre, setGenre] = useState('M');
-  const [name, setName] = useState('');
-  const [nameError, setNameError] = useState(false);
-  const [lastname, setLastname] = useState('');
-  const [lastnameError, setLastnameError] = useState(false);
-  const [pwd, setPwd] = useState('');
-  const [pwdError, setPwdError] = useState(false);
+  const [birthday, setBirthday] = useState<Date>(maxDate);
+  const [birthdayError, setBirthdayError] = useState<boolean>(false);
+  const [cPwd, setCPwd] = useState<string>('');
+  const [cPwdError, setCPwdError] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>('');
+  const [emailError, setEmailError] = useState<boolean>(false);
+  const [genre, setGenre] = useState<string>('M');
+  const [name, setName] = useState<string>('');
+  const [nameError, setNameError] = useState<boolean>(false);
+  const [lastname, setLastname] = useState<string>('');
+  const [lastnameError, setLastnameError] = useState<boolean>(false);
+  const [pwd, setPwd] = useState<string>('');
+  const [pwdError, setPwdError] = useState<boolean>(false);
 
   // eslint-disable-next-line
   const stateSetters: Map<string, Dispatch<SetStateAction<any>>> = new Map<
@@ -109,7 +109,6 @@ const NewUserForm: FC = (): ReactElement => {
 
     if (!lBirthdayError && !lCPwdError && !lEmailError && !lNameError && !lLastnameError && !lPwdError) {
       const user: User = {
-        code: 0,
         birthday: lBirthday.getTime().toString(),
         email: email,
         genre,
@@ -147,9 +146,9 @@ const NewUserForm: FC = (): ReactElement => {
       handleChangeCPwd(e);
     }
 
-    // eslint-disable-next-line
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const valSetter: Dispatch<any> | undefined = stateSetters.get(name);
-    // eslint-disable-next-line
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const errorSetter: Dispatch<any> | undefined = stateSetters.get(name + 'Error');
     if (valSetter) valSetter(value);
 

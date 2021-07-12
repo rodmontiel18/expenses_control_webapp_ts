@@ -34,7 +34,7 @@ body,
 .card-container {
   box-shadow: -5px 5px 15px #000;
   margin: 40px 10% 3% 10%;
-  padding-bottom: 20px;
+  margin-bottom: 20px;
   min-width: 550px;
   width: auto;
 }

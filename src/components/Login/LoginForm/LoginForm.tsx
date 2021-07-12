@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 
 import { RootState, useAppDispatch } from '../../../store';
 import { setSpinnerVisibility } from '../../../reducers/appSlice';
+import { userSelector } from '../../../reducers/userSlice';
 import { signSelector } from '../../../reducers/signSlice';
 import { signIn } from '../../../actions/signActions';
 
@@ -24,13 +25,14 @@ const LoginForm: FC = (): ReactElement => {
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
   const history: History = useHistory();
 
+  const { signErrors, signUpMsg } = useSelector(signSelector);
+  const { profile } = useSelector(userSelector);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-
-  const { signErrors, signUpMsg, userData } = useSelector(signSelector);
 
   useEffect(function () {
     dispatch(setSpinnerVisibility(false));
@@ -38,17 +40,17 @@ const LoginForm: FC = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    if (userData && userData.token) {
+    if (profile.token) {
       const expiration = new Date(new Date().getTime() + 6 * 60 * 60 * 1000);
       // const expiration: Date = new Date(new Date().getTime() + 15 * 60 * 1000);
-      Cookies.set('userData', JSON.stringify(userData), {
+      Cookies.set('userData', JSON.stringify(profile), {
         expires: expiration,
         path: '',
       });
       history.push('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData]);
+  }, [profile.token]);
 
   const login = useCallback((formValues: FormData): void => {
     const { email, password } = formValues;

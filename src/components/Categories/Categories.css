@@ -1,0 +1,11 @@
+.category-list-container th {
+    text-align: center;
+}
+
+.category-list-title {
+    text-align: center;
+}
+
+.add-category-button {
+    float: right;
+}

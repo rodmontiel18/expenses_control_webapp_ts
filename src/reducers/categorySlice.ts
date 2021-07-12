@@ -1,13 +1,6 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
-
-export interface Category {
-  color: string;
-  description: string;
-  id: number;
-  name: string;
-  userId: number;
-}
+import { Category } from '../models/category';
 
 interface CategoryState {
   categories?: Category[];
@@ -21,16 +14,16 @@ const initialState: CategoryState = {
   categoryErrors: undefined,
 };
 
-const resetCategoryErrorsRd: CaseReducer<CategoryState, PayloadAction> = (state) => {
+const resetCategoryErrorsRd: CaseReducer<CategoryState> = (state: CategoryState) => {
   state.categoryErrors = undefined;
 };
 
-const getCategoryByIdRqRd: CaseReducer<CategoryState, PayloadAction> = (state) => {
+const getUserCategoryByIdRqRd: CaseReducer<CategoryState> = (state: CategoryState) => {
   state.category = undefined;
   state.categoryErrors = undefined;
 };
 
-const getUserCategoriesByTypeRqRd: CaseReducer<CategoryState, PayloadAction> = (state) => {
+const getUserCategoriesByTypeRqRd: CaseReducer<CategoryState> = (state) => {
   state.categories = undefined;
   state.category = undefined;
   state.categoryErrors = undefined;
@@ -49,10 +42,10 @@ export const categorySlice = createSlice({
     delCategoryRq: resetCategoryErrorsRd,
     editCategoryRq: resetCategoryErrorsRd,
     resetCategoryErrors: resetCategoryErrorsRd,
-    addCategorySuccess: getCategoryByIdRqRd,
-    editCategorySuccess: getCategoryByIdRqRd,
-    getCategoryByIdRq: getCategoryByIdRqRd,
-    categoriesError: (state, action: PayloadAction<string[]>) => {
+    addCategorySuccess: getUserCategoryByIdRqRd,
+    editCategorySuccess: getUserCategoryByIdRqRd,
+    getUserCategoryByIdRq: getUserCategoryByIdRqRd,
+    categoryError: (state, action: PayloadAction<string[]>) => {
       state.category = undefined;
       state.categoryErrors = action.payload;
     },
@@ -60,7 +53,7 @@ export const categorySlice = createSlice({
       state.categories = state.categories?.filter((category: Category) => category.id !== action.payload);
       state.categoryErrors = undefined;
     },
-    getCategoryByIdSuccess: (state, action: PayloadAction<Category>) => {
+    getUserCategoryByIdSuccess: (state, action: PayloadAction<Category>) => {
       state.category = action.payload;
       state.categoryErrors = undefined;
     },
@@ -81,10 +74,10 @@ export const {
   resetCategoryErrors,
   addCategorySuccess,
   editCategorySuccess,
-  getCategoryByIdRq,
-  categoriesError,
+  getUserCategoryByIdRq,
+  categoryError,
   delCategorySuccess,
-  getCategoryByIdSuccess,
+  getUserCategoryByIdSuccess,
   getUserCategoriesRq,
   getUserCategoriesByTypeRq,
   getUserCategoriesSuccess,

@@ -1,6 +1,6 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
-import { User } from './userSlice';
+import { User } from '../models/user';
 
 interface SignState {
   signErrors?: string[];

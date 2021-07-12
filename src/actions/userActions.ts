@@ -6,14 +6,16 @@ import { AppThunk, RootState } from '../store';
 import { handleRequestError } from '../utilities/util';
 
 import { setSpinnerVisibility } from '../reducers/appSlice';
-import { resetPasswordRq, userError } from '../reducers/userSlice';
+import { resetPasswordRq, resetPasswordSuccess, userError } from '../reducers/userSlice';
+import { AxiosResponse } from 'axios';
+import { BaseResponse } from '../models/responses/BaseResponse';
 
 // const url = '/user';
 
 export const requestResetPassword =
   (email: string): AppThunk =>
   async () => {
-    axios.get('/request-reset-password/' + email);
+    await axios.get('/request-reset-password/' + email);
   };
 
 export const resetPassword =
@@ -22,14 +24,15 @@ export const resetPassword =
     dispatch(setSpinnerVisibility(true));
     dispatch(resetPasswordRq());
     try {
-      const response = axios.put('/reset-password', {
+      const response: AxiosResponse<BaseResponse> = await axios.put<BaseResponse>('/reset-password', {
         password,
         token,
       });
       if (handleRequestError(response, dispatch, userError)) {
+        dispatch(resetPasswordSuccess());
       }
     } catch (error) {
-      handleRequestError(error, dispatch, userError);
+      dispatch(userError(['An error has ocurred, try again later']));
     } finally {
       dispatch(setSpinnerVisibility(false));
       document.body.scrollTop = 0;

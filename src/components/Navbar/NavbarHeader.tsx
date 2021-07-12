@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { Location } from 'history';
 
-import { signSelector } from '../../reducers/signSlice';
+import { userSelector } from '../../reducers/userSlice';
 
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
@@ -12,7 +12,7 @@ import './NavbarHeader.css';
 
 const NavbarHeader: FC = (): ReactElement => {
   const location: Location = useLocation();
-  const { userData } = useSelector(signSelector);
+  const { profile } = useSelector(userSelector);
 
   const logout = (e: MouseEvent): void => {
     e.preventDefault();
@@ -20,38 +20,34 @@ const NavbarHeader: FC = (): ReactElement => {
     window.location.reload();
   };
 
-  const renderNavbar = (): JSX.Element => {
-    return (
-      <Navbar bg="light" expand="lg" fixed="top">
-        <Navbar.Brand className="font-weight-bold" href="/">
-          Expenses control
-        </Navbar.Brand>
-        <Navbar.Toggle />
-        <Navbar.Collapse id="basic-navbar">
-          <Nav className="mr-auto">
-            <Nav.Link className={location.pathname === '/categories' ? 'active' : ''} href="/categories">
-              Categories
-            </Nav.Link>
-            <Nav.Link className={location.pathname === '/expenses' ? 'active' : ''} href="/expenses">
-              Expenses
-            </Nav.Link>
-            <Nav.Link className={location.pathname === '/incomes' ? 'active ' : ''} href="/incomes">
-              Incomes
-            </Nav.Link>
-          </Nav>
-          <NavDropdown title={userData?.name || ''} id="basic-nav-dropdown">
-            <NavDropdown.Item href="/my-account">My account</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item onClick={logout}>Sign out</NavDropdown.Item>
-          </NavDropdown>
-        </Navbar.Collapse>
-      </Navbar>
-    );
-  };
+  if (!profile.token) return <></>;
 
-  const lNavbar: JSX.Element | null = userData && userData.token ? renderNavbar() : null;
-
-  return <>{lNavbar}</>;
+  return (
+    <Navbar bg="light" expand="lg" fixed="top">
+      <Navbar.Brand className="font-weight-bold" href="/">
+        Expenses control
+      </Navbar.Brand>
+      <Navbar.Toggle />
+      <Navbar.Collapse id="basic-navbar">
+        <Nav className="mr-auto">
+          <Nav.Link className={location.pathname === '/categories' ? 'active' : ''} href="/categories">
+            Categories
+          </Nav.Link>
+          <Nav.Link className={location.pathname === '/expenses' ? 'active' : ''} href="/expenses">
+            Expenses
+          </Nav.Link>
+          <Nav.Link className={location.pathname === '/incomes' ? 'active ' : ''} href="/incomes">
+            Incomes
+          </Nav.Link>
+        </Nav>
+        <NavDropdown title={profile.name} id="basic-nav-dropdown">
+          <NavDropdown.Item href="/my-account">My account</NavDropdown.Item>
+          <NavDropdown.Divider />
+          <NavDropdown.Item onClick={logout}>Sign out</NavDropdown.Item>
+        </NavDropdown>
+      </Navbar.Collapse>
+    </Navbar>
+  );
 };
 
 export default NavbarHeader;

@@ -5,11 +5,34 @@ import { AppThunk, RootState } from '../store';
 import axios from '../utilities/axiosConfig';
 
 import { setSpinnerVisibility } from '../reducers/appSlice';
-import { signInRq, signError, signInSuccess, signUpSuccess } from '../reducers/signSlice';
-import { User } from '../reducers/userSlice';
+import { signInRq, signError, signUpSuccess } from '../reducers/signSlice';
+import { setUser } from '../reducers/userSlice';
 import { handleRequestError } from '../utilities/util';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action } from '@reduxjs/toolkit';
+import { LoginRs, SignupRs, User } from '../models/user';
+import { AxiosResponse } from 'axios';
+
+export const githubSign =
+  (code: string, history: History): AppThunk =>
+  async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+    dispatch(setSpinnerVisibility(true));
+    try {
+      const response: AxiosResponse<LoginRs> = await axios.get<LoginRs>(`/signin/oauth/github/${code}`);
+      if (handleRequestError(response, dispatch, signError)) {
+        dispatch(setUser(response.data));
+        if (response.data.code !== 119) {
+          history.push('/signin');
+        }
+      } else {
+        history.push('/signin');
+      }
+    } catch (error) {
+      dispatch(signError(['An error has ocurred, try again later']));
+    } finally {
+      dispatch(setSpinnerVisibility(false));
+    }
+  };
 
 export const signIn =
   (email: string, password: string): AppThunk =>
@@ -23,33 +46,12 @@ export const signIn =
     try {
       dispatch(setSpinnerVisibility(true));
       dispatch(signInRq());
-      const response = await axios.get<User>('/signin', options);
+      const response: AxiosResponse<LoginRs> = await axios.get<LoginRs>('/signin', options);
       if (handleRequestError(response, dispatch, signError)) {
-        dispatch(signInSuccess(response.data));
+        dispatch(setUser(response.data));
       }
     } catch (error) {
-      handleRequestError(error, dispatch, signError);
-    } finally {
-      dispatch(setSpinnerVisibility(false));
-    }
-  };
-
-export const githubSign =
-  (code: string, history: History): AppThunk =>
-  async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
-    dispatch(setSpinnerVisibility(true));
-    try {
-      const response = await axios.get<User>(`/signin/oauth/github/${code}`);
-      if (handleRequestError(response, dispatch, signError)) {
-        dispatch(signInSuccess(response.data));
-        if (response.data.code !== 119) {
-          history.push('/signin');
-        }
-      } else {
-        history.push('/signin');
-      }
-    } catch (error) {
-      handleRequestError(error, dispatch, signError);
+      dispatch(signError(['An error has ocurred, try again later']));
     } finally {
       dispatch(setSpinnerVisibility(false));
     }
@@ -60,13 +62,13 @@ export const signUp =
   async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch(setSpinnerVisibility(true));
     try {
-      const response = await axios.post('/signup', user);
+      const response: AxiosResponse<SignupRs> = await axios.post<SignupRs>('/signup', user);
       if (handleRequestError(response, dispatch, signError)) {
-        dispatch(signUpSuccess(response.data));
+        dispatch(signUpSuccess(response.data.signupMessage));
         history.push('/success-signin');
       }
     } catch (error) {
-      handleRequestError(error, dispatch, signError);
+      dispatch(signError(['An error has ocurred, try again later']));
     } finally {
       dispatch(setSpinnerVisibility(false));
     }

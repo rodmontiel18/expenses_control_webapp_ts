@@ -9,11 +9,18 @@ import SuccessSignUp from '../components/Login/SuccessSignup/SuccessSignUp';
 import GithubLogin from '../components/Login/GithubLogin/GithubLogin';
 import ResetPassword from '../components/Login/ResetPassword/ResetPassword';
 import ResetPasswordForm from '../components/Login/ResetPassword/ResetPasswordForm';
+import Categories from '../components/Categories/Categories';
+import AddCategory from '../components/Categories/AddCategory/AddCategory';
+import EditCategory from '../components/Categories/EditCategory/EditCategory';
 
 const Routes = () => {
   return (
     <Switch>
       <Route exact path="/" component={Dashboard} />
+      <Route exact path="/dashboard" component={Dashboard} />
+      <Route exact path="/categories" component={Categories} />
+      <Route exact path="/categories/add" component={AddCategory} />
+      <Route exact path="/categories/edit/:id" component={EditCategory} />
       <Route exact path="/signup">
         <Login>
           <NewUserForm />

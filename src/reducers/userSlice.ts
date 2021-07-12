@@ -1,28 +1,29 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { User } from '../models/user';
 import type { RootState } from '../store';
 
-export interface User {
-  code: number;
-  birthday: string;
-  email: string;
-  genre: string;
-  id: number;
-  lastname: string;
-  name: string;
-  password: string;
-  token: string;
-}
-
 export interface UserState {
-  profile?: User;
+  profile: User;
   successRq: boolean;
   updateProfileRqFlag: boolean;
   updatePasswordRqFlag: boolean;
   userErrors?: string[];
 }
 
+const initialUser = {
+  birthday: '',
+  code: 0,
+  email: '',
+  genre: '',
+  id: 0,
+  lastname: '',
+  name: '',
+  password: '',
+  token: '',
+};
+
 const initialState: UserState = {
-  profile: undefined,
+  profile: { ...initialUser },
   successRq: false,
   updatePasswordRqFlag: false,
   updateProfileRqFlag: false,
@@ -34,7 +35,7 @@ export const userSlice = createSlice({
   name: 'user',
   reducers: {
     getProfileRq: (state: UserState) => {
-      state.profile = undefined;
+      state.profile = { ...initialUser };
       state.userErrors = undefined;
     },
     getProfileSuccess: (state: UserState, action: PayloadAction<User>) => {
@@ -52,6 +53,9 @@ export const userSlice = createSlice({
     resetUserErrors: (state: UserState) => {
       state.userErrors = undefined;
     },
+    setUser: (state: UserState, action: PayloadAction<User>) => {
+      state.profile = action.payload;
+    },
     updateProfileRq: (state: UserState) => {
       state.updateProfileRqFlag = false;
       state.userErrors = undefined;
@@ -68,7 +72,7 @@ export const userSlice = createSlice({
       state.userErrors = undefined;
     },
     userError: (state: UserState, action: PayloadAction<string[]>) => {
-      state.profile = undefined;
+      state.profile = { ...initialUser };
       state.updateProfileRqFlag = false;
       state.userErrors = action.payload;
     },
@@ -81,6 +85,7 @@ export const {
   resetPasswordRq,
   resetPasswordSuccess,
   resetUserErrors,
+  setUser,
   updateProfileRq,
   updateProfileSuccess,
   updatePqsswordRq,
