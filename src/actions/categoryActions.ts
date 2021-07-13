@@ -1,4 +1,9 @@
-import { AppThunk } from '../store';
+import { Action } from '@reduxjs/toolkit';
+import { AxiosResponse } from 'axios';
+import { History } from 'history';
+import { ThunkDispatch } from 'redux-thunk';
+
+import { AppThunk, RootState } from '../store';
 import axios from '../utilities/axiosConfig';
 import { setSpinnerVisibility } from '../reducers/appSlice';
 import {
@@ -13,19 +18,19 @@ import {
   getUserCategoryByIdSuccess,
   getUserCategoriesRq,
   getUserCategoriesSuccess,
+  getUserCategoriesByTypeRq,
+  getUserCategoriesByTypeSuccess,
 } from '../reducers/categorySlice';
 import { Category } from '../models/category';
 import { BaseResponse } from '../models/responses/BaseResponse';
 import { AddUserCategoryRs, GetUserCategoriesRs } from '../models/responses/category';
 import { handleRequestError } from '../utilities/util';
-import { History } from 'history';
-import { AxiosResponse } from 'axios';
 
 const url = '/categories';
 
 export const addCategory =
   (category: Category, history: History, userToken: string): AppThunk =>
-  async (dispatch) => {
+  async (dispatch: ThunkDispatch<RootState, null, Action>) => {
     const options = {
       headers: {
         Authorization: 'Bearer ' + userToken,
@@ -48,7 +53,7 @@ export const addCategory =
 
 export const delCategory =
   (id: number, userToken: string): AppThunk =>
-  async (dispatch) => {
+  async (dispatch: ThunkDispatch<RootState, null, Action>) => {
     const options = {
       headers: {
         Authorization: 'Bearer ' + userToken,
@@ -70,7 +75,7 @@ export const delCategory =
 
 export const editCategory =
   (category: Category, history: History, userToken: string): AppThunk =>
-  async (dispatch) => {
+  async (dispatch: ThunkDispatch<RootState, null, Action>) => {
     const options = {
       headers: {
         Authorization: 'Bearer ' + userToken,
@@ -95,9 +100,32 @@ export const editCategory =
     }
   };
 
+export const getUserCategories =
+  (userToken: string): AppThunk =>
+  async (dispatch: ThunkDispatch<RootState, null, Action>) => {
+    const options = {
+      headers: {
+        Authorization: 'Bearer ' + userToken,
+      },
+    };
+    try {
+      dispatch(setSpinnerVisibility(true));
+      dispatch(getUserCategoriesRq());
+      const categories: AxiosResponse<GetUserCategoriesRs> = await axios.get<GetUserCategoriesRs>(
+        `${url}/user`,
+        options,
+      );
+      dispatch(getUserCategoriesSuccess(categories.data.categories));
+    } catch (error) {
+      dispatch(categoryError(['An error has ocurred, try again later']));
+    } finally {
+      dispatch(setSpinnerVisibility(false));
+    }
+  };
+
 export const getUserCategoryById =
   (categoryId: string, userToken: string): AppThunk =>
-  async (dispatch) => {
+  async (dispatch: ThunkDispatch<RootState, null, Action>) => {
     const options = {
       headers: {
         Authorization: 'Bearer ' + userToken,
@@ -120,22 +148,21 @@ export const getUserCategoryById =
     }
   };
 
-export const getUserCategories =
-  (userToken: string): AppThunk =>
-  async (dispatch) => {
+export const getUserCategoriesByType =
+  (categoryType: number, userToken: string): AppThunk =>
+  async (dispatch: ThunkDispatch<RootState, null, Action>) => {
     const options = {
       headers: {
         Authorization: 'Bearer ' + userToken,
       },
     };
+    dispatch(setSpinnerVisibility(true));
+    dispatch(getUserCategoriesByTypeRq());
     try {
-      dispatch(setSpinnerVisibility(true));
-      dispatch(getUserCategoriesRq());
-      const categories: AxiosResponse<GetUserCategoriesRs> = await axios.get<GetUserCategoriesRs>(
-        `${url}/user`,
-        options,
-      );
-      dispatch(getUserCategoriesSuccess(categories.data.categories));
+      const response = await axios.get<GetUserCategoriesRs>(`${url}/user/type/${categoryType}`, options);
+      if (handleRequestError(response, dispatch, categoryError)) {
+        dispatch(getUserCategoriesByTypeSuccess(response.data.categories));
+      }
     } catch (error) {
       dispatch(categoryError(['An error has ocurred, try again later']));
     } finally {

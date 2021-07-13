@@ -23,13 +23,16 @@ const getUserCategoryByIdRqRd: CaseReducer<CategoryState> = (state: CategoryStat
   state.categoryErrors = undefined;
 };
 
-const getUserCategoriesByTypeRqRd: CaseReducer<CategoryState> = (state) => {
+const getUserCategoriesByTypeRqRd: CaseReducer<CategoryState> = (state: CategoryState) => {
   state.categories = undefined;
   state.category = undefined;
   state.categoryErrors = undefined;
 };
 
-const getUserCategoriesByTypeSuccessRd: CaseReducer<CategoryState, PayloadAction<Category[]>> = (state, action) => {
+const getUserCategoriesByTypeSuccessRd: CaseReducer<CategoryState, PayloadAction<Category[]>> = (
+  state: CategoryState,
+  action: PayloadAction<Category[]>,
+) => {
   state.categories = action.payload;
   state.categoryErrors = undefined;
 };
@@ -45,15 +48,15 @@ export const categorySlice = createSlice({
     addCategorySuccess: getUserCategoryByIdRqRd,
     editCategorySuccess: getUserCategoryByIdRqRd,
     getUserCategoryByIdRq: getUserCategoryByIdRqRd,
-    categoryError: (state, action: PayloadAction<string[]>) => {
+    categoryError: (state: CategoryState, action: PayloadAction<string[]>) => {
       state.category = undefined;
       state.categoryErrors = action.payload;
     },
-    delCategorySuccess: (state, action: PayloadAction<number>) => {
+    delCategorySuccess: (state: CategoryState, action: PayloadAction<number>) => {
       state.categories = state.categories?.filter((category: Category) => category.id !== action.payload);
       state.categoryErrors = undefined;
     },
-    getUserCategoryByIdSuccess: (state, action: PayloadAction<Category>) => {
+    getUserCategoryByIdSuccess: (state: CategoryState, action: PayloadAction<Category>) => {
       state.category = action.payload;
       state.categoryErrors = undefined;
     },
@@ -61,7 +64,7 @@ export const categorySlice = createSlice({
     getUserCategoriesByTypeRq: getUserCategoriesByTypeRqRd,
     getUserCategoriesSuccess: getUserCategoriesByTypeSuccessRd,
     getUserCategoriesByTypeSuccess: getUserCategoriesByTypeSuccessRd,
-    resetCategories: (state) => {
+    resetCategories: (state: CategoryState) => {
       state.categories = undefined;
     },
   },

@@ -12,15 +12,17 @@ import ResetPasswordForm from '../components/Login/ResetPassword/ResetPasswordFo
 import Categories from '../components/Categories/Categories';
 import AddCategory from '../components/Categories/AddCategory/AddCategory';
 import EditCategory from '../components/Categories/EditCategory/EditCategory';
+import Incomes from '../components/Incomes/Incomes';
 
 const Routes = () => {
   return (
     <Switch>
       <Route exact path="/" component={Dashboard} />
-      <Route exact path="/dashboard" component={Dashboard} />
       <Route exact path="/categories" component={Categories} />
       <Route exact path="/categories/add" component={AddCategory} />
       <Route exact path="/categories/edit/:id" component={EditCategory} />
+      <Route exact path="/incomes" component={Incomes} />
+      <Route exact path="/dashboard" component={Dashboard} />
       <Route exact path="/signup">
         <Login>
           <NewUserForm />
