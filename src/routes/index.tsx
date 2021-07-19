@@ -15,6 +15,9 @@ import EditCategory from '../components/Categories/EditCategory/EditCategory';
 import Incomes from '../components/Incomes/Incomes';
 import AddIncome from '../components/Incomes/AddIncome/AddIncome';
 import EditIncome from '../components/Incomes/EditIncome/EditIncome';
+import Expenses from '../components/Expenses/Expenses';
+import AddExpense from '../components/Expenses/AddExpense/AddExpense';
+import EditExpense from '../components/Expenses/EditExpense/EditExpense';
 
 const Routes = () => {
   return (
@@ -23,6 +26,9 @@ const Routes = () => {
       <Route exact path="/categories" component={Categories} />
       <Route exact path="/categories/add" component={AddCategory} />
       <Route exact path="/categories/edit/:id" component={EditCategory} />
+      <Route exact path="/expenses" component={Expenses} />
+      <Route exact path="/expenses/add" component={AddExpense} />
+      <Route exact path="/expenses/edit/:id" component={EditExpense} />
       <Route exact path="/incomes" component={Incomes} />
       <Route exact path="/incomes/add" component={AddIncome} />
       <Route exact path="/incomes/edit/:id" component={EditIncome} />
