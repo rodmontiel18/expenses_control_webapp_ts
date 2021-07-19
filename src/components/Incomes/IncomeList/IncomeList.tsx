@@ -18,11 +18,11 @@ const IncomeList: FC<IncomeListProps> = ({ categories, incomes, userToken }): Re
       <table className="table table-sm table-bordered table-hover">
         <thead className="thead-light">
           <tr>
-            <th>Fecha</th>
-            <th>Descripci&oacute;n</th>
-            <th>Categoria</th>
-            <th>Monto</th>
-            <th>Acci&oacute;n</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>

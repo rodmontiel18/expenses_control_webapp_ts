@@ -2,7 +2,7 @@ import { FC, KeyboardEvent, MouseEvent, ReactElement } from 'react';
 
 interface TabsProps {
   tabs: TabProps[];
-  onChange: Function;
+  onClick(event: MouseEvent | KeyboardEvent, newValue: string): void;
   value: string;
 }
 
@@ -12,14 +12,14 @@ export interface TabProps {
   title: string;
 }
 
-export const Tabs: FC<TabsProps> = ({ tabs, onChange, value }): ReactElement => {
+export const Tabs: FC<TabsProps> = ({ tabs, onClick, value }): ReactElement => {
   if (!tabs || tabs.length < 1) return <></>;
 
   const handleClick = (event: MouseEvent<HTMLSpanElement> | KeyboardEvent<HTMLSpanElement>) => {
     let newValue = '';
     if (event.currentTarget && event.currentTarget.parentElement && event.currentTarget.parentElement.id)
       newValue = event.currentTarget.parentElement.id.replace('tab-', '');
-    if (onChange) onChange(event, newValue);
+    if (onClick) onClick(event, newValue);
   };
 
   return (

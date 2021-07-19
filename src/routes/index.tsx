@@ -13,6 +13,8 @@ import Categories from '../components/Categories/Categories';
 import AddCategory from '../components/Categories/AddCategory/AddCategory';
 import EditCategory from '../components/Categories/EditCategory/EditCategory';
 import Incomes from '../components/Incomes/Incomes';
+import AddIncome from '../components/Incomes/AddIncome/AddIncome';
+import EditIncome from '../components/Incomes/EditIncome/EditIncome';
 
 const Routes = () => {
   return (
@@ -22,6 +24,8 @@ const Routes = () => {
       <Route exact path="/categories/add" component={AddCategory} />
       <Route exact path="/categories/edit/:id" component={EditCategory} />
       <Route exact path="/incomes" component={Incomes} />
+      <Route exact path="/incomes/add" component={AddIncome} />
+      <Route exact path="/incomes/edit/:id" component={EditIncome} />
       <Route exact path="/dashboard" component={Dashboard} />
       <Route exact path="/signup">
         <Login>

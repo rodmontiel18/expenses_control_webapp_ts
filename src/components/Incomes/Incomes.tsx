@@ -1,5 +1,5 @@
 import { Action } from '@reduxjs/toolkit';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { ThunkDispatch } from 'redux-thunk';
 import { useSelector } from 'react-redux';
 
@@ -22,14 +22,15 @@ const Incomes = () => {
   const { categories } = useSelector(categorySelector);
   const { incomeErrors, incomes } = useSelector(incomeSelector);
 
-  const _tempDate = new Date().getTime();
+  /* const _tempDate = new Date().getTime();
   const [endDate, setEndDate] = useState(_tempDate);
   const [mode, setMode] = useState('month');
   const [startDate, setStartDate] = useState(_tempDate);
-  const [startMonth, setStartMonth] = useState(_tempDate);
+  const [startMonth, setStartMonth] = useState(_tempDate); */
 
   useEffect(() => {
     dispatch(getUserCategoriesByType(2, profile.token));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -51,14 +52,15 @@ const Incomes = () => {
             new Date(datesFormData.values.startDate),
             new Date(datesFormData.values.startMonth),
           );
-          setEndDate(datesFormData.values.endDate);
+          /* setEndDate(datesFormData.values.endDate);
           setMode(datesFormData.mode);
           setStartDate(datesFormData.values.startDate);
-          setStartMonth(datesFormData.values.startMonth);
+          setStartMonth(datesFormData.values.startMonth); */
           localStorage.removeItem('datesFormData');
         }
       } else callGetUserIncomes('month', undefined, undefined, new Date());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categories]);
 
   if (!categories || categories.length < 1) return <NoCategoriesMsg />;
@@ -87,22 +89,6 @@ const Incomes = () => {
     dispatch(getUserIncomes(profile.token, fromNumber, toNumber));
   };
 
-  /* const goIncomeForm = (e, incomeId) => {
-    e.preventDefault();
-    const _tempData = {
-      mode,
-      values: {
-        endDate,
-        startDate,
-        startMonth,
-      },
-    };
-    localStorage.setItem('datesFormData', JSON.stringify(_tempData));
-
-    if (incomeId) history.push(`/incomes/edit/${incomeId}`);
-    else history.push('/incomes/add');
-  }; */
-
   const renderErrors = () => {
     if (incomeErrors && incomeErrors.length > 0)
       return <SimpleError callbackFn={resetIncomeError} errors={incomeErrors} timeout={5000} />;
@@ -115,10 +101,10 @@ const Incomes = () => {
   };
 
   const searchIncome = (_mode: string, _endDate: Date, _startDate: Date, _startMonth: Date) => {
-    setEndDate(_endDate.getTime());
+    /*setEndDate(_endDate.getTime());
     setMode(_mode);
     setStartDate(_startDate.getTime());
-    setStartMonth(_startMonth.getTime());
+    setStartMonth(_startMonth.getTime());*/
     callGetUserIncomes(_mode, _endDate, _startDate, _startMonth);
   };
 
@@ -130,8 +116,8 @@ const Incomes = () => {
         </div>
         <div className="pt-3">
           {renderErrors()}
-          {/*<DatesContainer searchAction={'searchIncome'} userToken={profile.token} />*/}
-          <DatesContainer userToken={profile.token} />
+          <DatesContainer searchAction={searchIncome} />
+          {/*<DatesContainer userToken={profile.token} />*/}
           {renderIncomeList()}
           <div className="add-category-button">
             <Link style={{ marginLeft: 5 }} to="/incomes/add" className="btn btn-sm btn-info">

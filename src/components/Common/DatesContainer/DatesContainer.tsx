@@ -1,15 +1,12 @@
-import { ChangeEvent, FC, ReactElement, useEffect, useState } from 'react';
-import { TabProps } from '../Tabs/Tabs';
+import { FC, KeyboardEvent, MouseEvent, ReactElement, useEffect, useState } from 'react';
+import { TabProps, TabPanel, Tabs } from '../Tabs/Tabs';
 import DatePicker from 'react-datepicker';
 
-import { TabPanel, Tabs } from '../Tabs/Tabs';
-
 interface DatesContainerProps {
-  // searchAction: string;
-  userToken: string;
+  searchAction(mode: string, endDate: Date, startDate: Date, startMonth: Date): void;
 }
 
-const DatesContainer: FC<DatesContainerProps> = (/*{ searchAction, userToken }*/): ReactElement => {
+const DatesContainer: FC<DatesContainerProps> = ({ searchAction }): ReactElement => {
   const [mode, setMode] = useState('month');
   const [startMonth, setStartMonth] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
@@ -71,20 +68,19 @@ const DatesContainer: FC<DatesContainerProps> = (/*{ searchAction, userToken }*/
     }
   };
 
-  const handleTabChange = (event: ChangeEvent, newValue: string) => {
+  const handleTabChange = (event: MouseEvent | KeyboardEvent, newValue: string) => {
     event.preventDefault();
     setMode(newValue);
   };
 
-  const _searchAction = (/*e: MouseEvent<HTMLButtonElement>*/) => {
-    // if(searchAction == '')
-    // searchAction(e.currentTarget.value, endDate, startDate, startMonth, userToken);
+  const _searchAction = (e: MouseEvent<HTMLButtonElement>) => {
+    if (searchAction) searchAction(e.currentTarget.value, endDate, startDate, startMonth);
   };
 
   return (
     <div className="tabs-container">
       <label htmlFor="month">Filter movements by:</label>
-      <Tabs tabs={tabs} value={mode} onChange={handleTabChange} />
+      <Tabs tabs={tabs} value={mode} onClick={handleTabChange} />
       <div className="all-tab-content">
         <TabPanel className="month-inputs-container" id="month" value={mode}>
           <>
