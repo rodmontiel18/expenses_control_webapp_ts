@@ -48,16 +48,20 @@ const EditExpense: FC = (): ReactElement => {
     return <div className="alert alert-danger">The expense you want to modify does not exist</div>;
 
   return (
-    <div className="add-expense-container card">
-      <p className="card-title h2 mb-4">Edit an expense</p>
-      <ExpenseForm
-        actionForm="edit"
-        categories={categories}
-        expense={expense}
-        expenseErrors={expenseErrors || []}
-        history={history}
-        userToken={profile.token}
-      />
+    <div className="card card-container">
+      <div className="card-body">
+        <div style={{ borderBottom: 'solid 1px lightgray' }}>
+          <h1 className="h3 font-weight-bold text-center">Edit an expense</h1>
+        </div>
+        <ExpenseForm
+          actionForm="edit"
+          categories={categories}
+          expense={expense}
+          expenseErrors={expenseErrors || []}
+          history={history}
+          userToken={profile.token}
+        />
+      </div>
     </div>
   );
 };
