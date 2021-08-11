@@ -20,6 +20,7 @@ import { BaseResponse } from '../models/responses/BaseResponse';
 import { AddIncomeRs, GetUserIncomesRs } from '../models/responses/income';
 import { Income } from '../models/income';
 import { History } from 'history';
+import { AxiosRequestConfig } from 'axios';
 
 const url = '/incomes';
 
@@ -116,15 +117,19 @@ export const getIncomeById =
 export const getUserIncomes =
   (userToken: string, from: number, to: number): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
+    const options: AxiosRequestConfig = {
       headers: {
         Authorization: 'Bearer ' + userToken,
+      },
+      params: {
+        from,
+        to,
       },
     };
     dispatch(setSpinnerVisibility(true));
     dispatch(getUserIncomesRq());
     try {
-      const response = await axios.get<GetUserIncomesRs>(`${url}/user/range/${from}/${to}`, options);
+      const response = await axios.get<GetUserIncomesRs>(`${url}/user/range`, options);
       if (handleRequestError(response, dispatch, incomeError)) {
         dispatch(getUserIncomesSuccess(response.data.incomes));
       }

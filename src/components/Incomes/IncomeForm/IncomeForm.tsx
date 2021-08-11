@@ -105,7 +105,7 @@ const IncomeForm: FC<IncomeFormProps> = ({
   };
 
   const handleChangeDate = (date: Date): void => {
-    setIncomeDate(date);
+    setIncomeDate(new Date(date.setHours(0, 0, 0, 0)));
   };
 
   const getIncome = (): Income => {
@@ -113,7 +113,7 @@ const IncomeForm: FC<IncomeFormProps> = ({
       amount: parseInt(amount),
       categoryId: parseInt(category),
       description,
-      incomeDate,
+      incomeDate: incomeDate.getTime(),
       id: 0,
       userId: 0,
     };

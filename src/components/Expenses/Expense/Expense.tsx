@@ -31,16 +31,17 @@ const Expense: FC<ExpenseProps> = ({ categories, expense, userToken }): ReactEle
     if (window.confirm('Are you sure you want to delete this item?')) dispatch(delExpense(id, userToken));
   };
 
-  const expenseDate = new Intl.DateTimeFormat('es-MX', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).format(new Date(expense.expenseDate));
+  const getExpenseDate = () =>
+    new Intl.DateTimeFormat('es-MX', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(new Date(expense.expenseDate));
 
   return (
     <tr className="data-info">
       <td>
-        <p>{expenseDate}</p>
+        <p>{getExpenseDate()}</p>
       </td>
       <td>
         <p>{expense.description}</p>

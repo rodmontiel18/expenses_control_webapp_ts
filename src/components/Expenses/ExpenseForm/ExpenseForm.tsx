@@ -133,7 +133,7 @@ const ExpenseForm: FC<ExpenseFormProps> = ({
   };
 
   const handleChangeDate = (date: Date): void => {
-    setExpenseDate(date);
+    setExpenseDate(new Date(date.setHours(0, 0, 0, 0)));
   };
 
   const renderErrors = (): JSX.Element => {

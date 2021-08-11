@@ -22,6 +22,7 @@ import {
 } from '../reducers/expensesSlice';
 import { BaseResponse } from '../models/responses/BaseResponse';
 import { EditExpenseSuccessRs, GetAllExpensesRS } from '../models/responses/expense';
+import { AxiosRequestConfig } from 'axios';
 
 const url = '/expenses';
 
@@ -96,15 +97,19 @@ export const editExpense =
 export const getAllExpenses =
   (from: number, to: number, userToken: string): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
+    const options: AxiosRequestConfig = {
       headers: {
         Authorization: 'Bearer ' + userToken,
+      },
+      params: {
+        from,
+        to,
       },
     };
     dispatch(setSpinnerVisibility(true));
     dispatch(getAllExpensesRq());
     try {
-      const response = await axios.get<GetAllExpensesRS>(`${url}/user/range/${from}/${to}`, options);
+      const response = await axios.get<GetAllExpensesRS>(`${url}/user/range`, options);
       if (handleRequestError(response, dispatch, expensesError)) {
         dispatch(getAllExpensesSuccess(response.data.expenses));
       }

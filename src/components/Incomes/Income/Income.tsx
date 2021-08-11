@@ -31,16 +31,17 @@ const Income: FC<IncomeProps> = ({ categories, income, userToken }): ReactElemen
     if (window.confirm('Estas seguro de que deseas eliminar este ingreso?')) dispatch(delIncome(id, userToken));
   };
 
-  const incomeDate = new Intl.DateTimeFormat('es-MX', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).format(new Date(income.incomeDate));
+  const getIncomeDate = () =>
+    new Intl.DateTimeFormat('es-MX', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(new Date(income.incomeDate));
 
   return (
     <tr className="data-info">
       <td>
-        <p>{incomeDate}</p>
+        <p>{getIncomeDate()}</p>
       </td>
       <td>
         <p>{income.description}</p>

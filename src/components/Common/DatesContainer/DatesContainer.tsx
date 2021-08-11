@@ -48,23 +48,23 @@ const DatesContainer: FC<DatesContainerProps> = ({ searchAction }): ReactElement
 
   const handleChangeEndDate = (date: Date) => {
     if (date < startDate) {
-      setStartDate(date);
-      setEndDate(date);
+      setStartDate(new Date(date.getTime()));
+      setEndDate(new Date(date.getTime()));
     } else {
-      setEndDate(date);
+      setEndDate(new Date(date.getTime()));
     }
   };
 
   const handleChangeMonth = (date: Date) => {
-    setStartMonth(date);
+    setStartMonth(new Date(date.getTime()));
   };
 
   const handleChangeStartDate = (date: Date) => {
     if (date > endDate) {
-      setStartDate(date);
-      setEndDate(date);
+      setStartDate(new Date(date.getTime()));
+      setEndDate(new Date(date.getTime()));
     } else {
-      setStartDate(date);
+      setStartDate(new Date(date.getTime()));
     }
   };
 
