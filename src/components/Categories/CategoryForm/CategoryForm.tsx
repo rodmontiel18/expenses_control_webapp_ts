@@ -28,16 +28,9 @@ interface CategooryFormProps {
   category?: Category;
   categoryErrors?: string[];
   history: History;
-  userToken: string;
 }
 
-const CategoryForm: FC<CategooryFormProps> = ({
-  actionForm,
-  category,
-  categoryErrors,
-  history,
-  userToken,
-}): ReactElement => {
+const CategoryForm: FC<CategooryFormProps> = ({ actionForm, category, categoryErrors, history }): ReactElement => {
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
 
   const [color, setColor] = useState<string>('#fff');
@@ -80,7 +73,7 @@ const CategoryForm: FC<CategooryFormProps> = ({
   }, [category]);
 
   const handleAddCategory = (category: Category): void => {
-    dispatch(addCategory(category, history, userToken));
+    dispatch(addCategory(category, history));
   };
 
   const cancelAdd = (e: MouseEvent): void => {
@@ -109,7 +102,7 @@ const CategoryForm: FC<CategooryFormProps> = ({
   };
 
   const handleEditCategory = (category: Category): void => {
-    dispatch(editCategory(category, history, userToken));
+    dispatch(editCategory(category, history));
   };
 
   const getCategoryData = (): Category => {

@@ -7,7 +7,6 @@ import { getAllExpenses } from '../../actions/expenseActions';
 import { getUserCategoriesByType } from '../../actions/categoryActions';
 import { categorySelector } from '../../reducers/categorySlice';
 import { expenseSelector, resetExpenseErrors } from '../../reducers/expensesSlice';
-import { userSelector } from '../../reducers/userSlice';
 
 import DatesContainer from '../Common/DatesContainer/DatesContainer';
 import ExpenseList from './ExpenseList/ExpenseList';
@@ -20,12 +19,11 @@ import { RootState, useAppDispatch } from '../../store';
 
 const Expenses: FC = (): ReactElement => {
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
-  const { profile } = useSelector(userSelector);
   const { categories } = useSelector(categorySelector);
   const { expenses, expenseErrors } = useSelector(expenseSelector);
 
   useEffect(() => {
-    dispatch(getUserCategoriesByType(1, profile.token));
+    dispatch(getUserCategoriesByType(1));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -78,7 +76,7 @@ const Expenses: FC = (): ReactElement => {
       fromNumber = startDate.setHours(0, 0, 0, 0);
       toNumber = endDate.setHours(23, 59, 59, 0);
     }
-    dispatch(getAllExpenses(fromNumber, toNumber, profile.token));
+    dispatch(getAllExpenses(fromNumber, toNumber));
   };
 
   const renderExpenseErrors = (): JSX.Element => {
@@ -90,7 +88,7 @@ const Expenses: FC = (): ReactElement => {
   const renderExpenseList = (): JSX.Element => {
     if (!expenses || expenses.length < 1) return <NoResultsTable />;
 
-    return <ExpenseList categories={categories} expenses={expenses} userToken={profile.token} />;
+    return <ExpenseList categories={categories} expenses={expenses} />;
   };
 
   const searchExpenses = (_mode: string, _endDate: Date, _startDate: Date, _startMonth: Date): void => {

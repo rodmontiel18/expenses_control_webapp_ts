@@ -8,7 +8,6 @@ import { History } from 'history';
 
 import { getUserCategoryById } from '../../../actions/categoryActions';
 import { categorySelector } from '../../../reducers/categorySlice';
-import { userSelector } from '../../../reducers/userSlice';
 import { RootState, useAppDispatch } from '../../../store';
 
 // import { SimpleError } from '../../Common/Errors';
@@ -24,13 +23,12 @@ const EditCategory: FC = (): ReactElement => {
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
   const match: match<MatchProps> | null = useRouteMatch<MatchProps>('/categories/edit/:id');
   const history: History = useHistory();
-  const { profile } = useSelector(userSelector);
   const { category, categoryErrors } = useSelector(categorySelector);
 
   useEffect(() => {
     const categoryId = match?.params.id;
     if (categoryId && !category) {
-      dispatch(getUserCategoryById(categoryId, profile.token));
+      dispatch(getUserCategoryById(categoryId));
     }
   }, []);
 
@@ -50,13 +48,7 @@ const EditCategory: FC = (): ReactElement => {
           <h1 className="h3 font-weight-bold text-center">Edit category</h1>
         </div>
         {/*renderCategoryErrors()*/}
-        <CategoryForm
-          actionForm="edit"
-          category={category}
-          categoryErrors={categoryErrors}
-          history={history}
-          userToken={profile.token}
-        />
+        <CategoryForm actionForm="edit" category={category} categoryErrors={categoryErrors} history={history} />
       </div>
     </div>
   );

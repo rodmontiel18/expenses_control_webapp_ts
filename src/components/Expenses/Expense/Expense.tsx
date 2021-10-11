@@ -11,10 +11,9 @@ import { RootState, useAppDispatch } from '../../../store';
 interface ExpenseProps {
   categories: Category[];
   expense: ExpenseModel;
-  userToken: string;
 }
 
-const Expense: FC<ExpenseProps> = ({ categories, expense, userToken }): ReactElement => {
+const Expense: FC<ExpenseProps> = ({ categories, expense }): ReactElement => {
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
   const category = categories.find((c) => c.id === expense.categoryId);
 
@@ -28,7 +27,7 @@ const Expense: FC<ExpenseProps> = ({ categories, expense, userToken }): ReactEle
     );
 
   const handleDelExpense = (id: number): void => {
-    if (window.confirm('Are you sure you want to delete this item?')) dispatch(delExpense(id, userToken));
+    if (window.confirm('Are you sure you want to delete this item?')) dispatch(delExpense(id));
   };
 
   const getExpenseDate = () =>

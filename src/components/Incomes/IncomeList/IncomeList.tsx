@@ -7,10 +7,9 @@ import { Income as IncomeModel } from '../../../models/income';
 interface IncomeListProps {
   categories: Category[];
   incomes: IncomeModel[];
-  userToken: string;
 }
 
-const IncomeList: FC<IncomeListProps> = ({ categories, incomes, userToken }): ReactElement => {
+const IncomeList: FC<IncomeListProps> = ({ categories, incomes }): ReactElement => {
   const total = incomes && incomes.length > 0 ? incomes.reduce((total, gasto) => total + gasto.amount, 0) : 0;
 
   return (
@@ -27,7 +26,7 @@ const IncomeList: FC<IncomeListProps> = ({ categories, incomes, userToken }): Re
         </thead>
         <tbody>
           {incomes.map((income) => (
-            <Income categories={categories} income={income} key={income.id} userToken={userToken} />
+            <Income categories={categories} income={income} key={income.id} />
           ))}
         </tbody>
       </table>

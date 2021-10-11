@@ -9,7 +9,6 @@ import { getUserCategoriesByType } from '../../../actions/categoryActions';
 
 import { categorySelector } from '../../../reducers/categorySlice';
 import { expenseSelector } from '../../../reducers/expensesSlice';
-import { userSelector } from '../../../reducers/userSlice';
 
 import { RootState, useAppDispatch } from '../../../store';
 
@@ -21,12 +20,11 @@ import './AddExpense.css';
 const AddExpense: FC = (): ReactElement => {
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
   const history: History = useHistory();
-  const { profile } = useSelector(userSelector);
   const { categories } = useSelector(categorySelector);
   const { expenseErrors } = useSelector(expenseSelector);
 
   useEffect(() => {
-    dispatch(getUserCategoriesByType(1, profile.token));
+    dispatch(getUserCategoriesByType(1));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -38,13 +36,7 @@ const AddExpense: FC = (): ReactElement => {
         <div style={{ borderBottom: 'solid 1px lightgray' }}>
           <h1 className="h3 font-weight-bold text-center">Add new expense</h1>
         </div>
-        <ExpenseForm
-          actionForm="add"
-          categories={categories}
-          expenseErrors={expenseErrors || []}
-          history={history}
-          userToken={profile.token}
-        />
+        <ExpenseForm actionForm="add" categories={categories} expenseErrors={expenseErrors || []} history={history} />
       </div>
     </div>
   );

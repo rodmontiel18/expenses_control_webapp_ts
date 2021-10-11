@@ -29,7 +29,6 @@ interface ExpenseFormProps {
   expense?: Expense;
   expenseErrors: string[];
   history: History;
-  userToken: string;
 }
 
 const ExpenseForm: FC<ExpenseFormProps> = ({
@@ -38,7 +37,6 @@ const ExpenseForm: FC<ExpenseFormProps> = ({
   expense,
   expenseErrors,
   history,
-  userToken,
 }): ReactElement => {
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
 
@@ -85,7 +83,7 @@ const ExpenseForm: FC<ExpenseFormProps> = ({
 
   const handleAddExpense = (): void => {
     const lExpense = getExpenseData();
-    dispatch(addExpense(lExpense, history, userToken));
+    dispatch(addExpense(lExpense, history));
   };
 
   const cancelAction = (e: MouseEvent): void => {
@@ -116,7 +114,7 @@ const ExpenseForm: FC<ExpenseFormProps> = ({
     const lExpense = getExpenseData();
     lExpense.id = parseInt(id);
 
-    dispatch(editExpense(lExpense, history, userToken));
+    dispatch(editExpense(lExpense, history));
   };
 
   const getExpenseData = (): Expense => {

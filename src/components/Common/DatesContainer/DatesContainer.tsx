@@ -83,15 +83,17 @@ const DatesContainer: FC<DatesContainerProps> = ({ searchAction }): ReactElement
       <Tabs tabs={tabs} value={mode} onClick={handleTabChange} />
       <div className="all-tab-content">
         <TabPanel className="month-inputs-container" id="month" value={mode}>
-          <>
-            <DatePicker
-              className="form-control"
-              name="month"
-              dateFormat="MM/yyyy"
-              onChange={handleChangeMonth}
-              selected={startMonth}
-              showMonthYearPicker
-            />
+          <div style={{ display: 'inline-flex' }}>
+            <div style={{ width: 'auto' }}>
+              <DatePicker
+                className="form-control"
+                name="month"
+                dateFormat="MM/yyyy"
+                onChange={handleChangeMonth}
+                selected={startMonth}
+                showMonthYearPicker
+              />
+            </div>
             <button
               className="btn btn-sm btn-info"
               onClick={_searchAction}
@@ -101,10 +103,10 @@ const DatesContainer: FC<DatesContainerProps> = ({ searchAction }): ReactElement
             >
               Search
             </button>
-          </>
+          </div>
         </TabPanel>
         <TabPanel className="range-inputs-container" id="range" value={mode}>
-          <>
+          <div style={{ display: 'inline-flex' }}>
             <label htmlFor="fromDate">De:</label>
             <DatePicker
               className="form-control"
@@ -140,7 +142,7 @@ const DatesContainer: FC<DatesContainerProps> = ({ searchAction }): ReactElement
             >
               Buscar
             </button>
-          </>
+          </div>
         </TabPanel>
       </div>
     </div>

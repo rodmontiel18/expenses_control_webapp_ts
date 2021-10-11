@@ -8,10 +8,9 @@ import Expense from '../Expense/Expense';
 interface ExpenseListProps {
   categories: Category[];
   expenses: ExpenseModel[];
-  userToken: string;
 }
 
-const ExpenseList: FC<ExpenseListProps> = ({ categories, expenses, userToken }): ReactElement => {
+const ExpenseList: FC<ExpenseListProps> = ({ categories, expenses }): ReactElement => {
   const total = expenses && expenses.length > 0 ? expenses.reduce((total, gasto) => total + gasto.amount, 0) : 0;
 
   return (
@@ -28,7 +27,7 @@ const ExpenseList: FC<ExpenseListProps> = ({ categories, expenses, userToken }):
         </thead>
         <tbody>
           {expenses.map((expense) => (
-            <Expense categories={categories} expense={expense} key={expense.id} userToken={userToken} />
+            <Expense categories={categories} expense={expense} key={expense.id} />
           ))}
         </tbody>
       </table>

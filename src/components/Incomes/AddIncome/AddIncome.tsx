@@ -8,7 +8,6 @@ import { History } from 'history';
 import { getUserCategoriesByType } from '../../../actions/categoryActions';
 import { incomeSelector } from '../../../reducers/incomeSlice';
 import { categorySelector } from '../../../reducers/categorySlice';
-import { userSelector } from '../../../reducers/userSlice';
 import { RootState, useAppDispatch } from '../../../store';
 
 import IncomeForm from '../IncomeForm/IncomeForm';
@@ -17,13 +16,11 @@ import NoCategoriesMsg from '../../Categories/NoCategoriesMsg/NoCategoriesMsg';
 const AddIncome: FC = (): ReactElement => {
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
   const history: History = useHistory();
-
-  const { profile } = useSelector(userSelector);
   const { categories } = useSelector(categorySelector);
   const { incomeErrors } = useSelector(incomeSelector);
 
   useEffect(() => {
-    dispatch(getUserCategoriesByType(2, profile.token));
+    dispatch(getUserCategoriesByType(2));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -35,13 +32,7 @@ const AddIncome: FC = (): ReactElement => {
         <div style={{ borderBottom: 'solid 1px lightgray' }}>
           <h1 className="h3 font-weight-bold text-center">Add new income</h1>
         </div>
-        <IncomeForm
-          actionForm="add"
-          categories={categories}
-          history={history}
-          incomeErrors={incomeErrors}
-          userToken={profile.token}
-        />
+        <IncomeForm actionForm="add" categories={categories} history={history} incomeErrors={incomeErrors} />
       </div>
     </div>
   );

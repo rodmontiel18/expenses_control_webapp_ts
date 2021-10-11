@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { Location } from 'history';
 
-import { userSelector } from '../../reducers/userSlice';
+import { signSelector } from '../../reducers/signSlice';
 
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
@@ -12,7 +12,7 @@ import './NavbarHeader.css';
 
 const NavbarHeader: FC = (): ReactElement => {
   const location: Location = useLocation();
-  const { profile } = useSelector(userSelector);
+  const { userData } = useSelector(signSelector);
 
   const logout = (e: MouseEvent): void => {
     e.preventDefault();
@@ -20,7 +20,7 @@ const NavbarHeader: FC = (): ReactElement => {
     window.location.reload();
   };
 
-  if (!profile.token) return <></>;
+  if (!userData) return <></>;
 
   return (
     <Navbar bg="light" expand="lg" fixed="top">
@@ -30,6 +30,9 @@ const NavbarHeader: FC = (): ReactElement => {
       <Navbar.Toggle />
       <Navbar.Collapse id="basic-navbar">
         <Nav className="mr-auto">
+          <Nav.Link className={location.pathname === '/dashboard' ? 'active' : ''} href="/dashboard">
+            Dashboard
+          </Nav.Link>
           <Nav.Link className={location.pathname === '/categories' ? 'active' : ''} href="/categories">
             Categories
           </Nav.Link>
@@ -40,7 +43,7 @@ const NavbarHeader: FC = (): ReactElement => {
             Incomes
           </Nav.Link>
         </Nav>
-        <NavDropdown title={profile.name} id="basic-nav-dropdown">
+        <NavDropdown title={userData.name} id="basic-nav-dropdown">
           <NavDropdown.Item href="/my-account">My account</NavDropdown.Item>
           <NavDropdown.Divider />
           <NavDropdown.Item onClick={logout}>Sign out</NavDropdown.Item>

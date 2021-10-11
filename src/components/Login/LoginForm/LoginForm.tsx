@@ -9,7 +9,6 @@ import Cookies from 'js-cookie';
 
 import { RootState, useAppDispatch } from '../../../store';
 import { setSpinnerVisibility } from '../../../reducers/appSlice';
-import { userSelector } from '../../../reducers/userSlice';
 import { signSelector } from '../../../reducers/signSlice';
 import { signIn } from '../../../actions/signActions';
 
@@ -26,7 +25,7 @@ const LoginForm: FC = (): ReactElement => {
   const history: History = useHistory();
 
   const { signErrors, signUpMsg } = useSelector(signSelector);
-  const { profile } = useSelector(userSelector);
+  const { userData } = useSelector(signSelector);
 
   const {
     register,
@@ -40,17 +39,17 @@ const LoginForm: FC = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    if (profile.token) {
+    if (userData && userData.token) {
       const expiration = new Date(new Date().getTime() + 6 * 60 * 60 * 1000);
       // const expiration: Date = new Date(new Date().getTime() + 15 * 60 * 1000);
-      Cookies.set('userData', JSON.stringify(profile), {
+      Cookies.set('userData', JSON.stringify(userData), {
         expires: expiration,
         path: '',
       });
       history.push('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile.token]);
+  }, [userData]);
 
   const login = useCallback((formValues: FormData): void => {
     const { email, password } = formValues;

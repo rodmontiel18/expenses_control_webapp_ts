@@ -9,6 +9,7 @@ import { History } from 'history';
 import { RootState, useAppDispatch } from '../../../store';
 import { setSpinnerVisibility } from '../../../reducers/appSlice';
 import { resetError, signSelector } from '../../../reducers/signSlice';
+import { userSelector } from '../../../reducers/userSlice';
 import { User } from '../../../models/user';
 import { signUp } from '../../../actions/signActions';
 
@@ -25,7 +26,8 @@ const NewUserForm: FC = (): ReactElement => {
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
   const history: History = useHistory();
 
-  const { signErrors, userData } = useSelector(signSelector);
+  const { signErrors } = useSelector(signSelector);
+  const { profile } = useSelector(userSelector);
 
   const [birthday, setBirthday] = useState<Date>(maxDate);
   const [birthdayError, setBirthdayError] = useState<boolean>(false);
@@ -73,13 +75,14 @@ const NewUserForm: FC = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    if (userData) {
-      const { birthday, email, name } = userData;
+    if (profile) {
+      const { birthday, email, lastname, name } = profile;
       if (birthday) setBirthday(new Date(birthday));
       if (email) setEmail(email);
       if (name) setName(name);
+      if (lastname) setLastname(lastname);
     }
-  }, [userData]);
+  }, [profile]);
 
   const createUser = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -116,7 +119,6 @@ const NewUserForm: FC = (): ReactElement => {
         name,
         lastname,
         password: pwd,
-        token: '',
       };
 
       dispatch(signUp(user, history));

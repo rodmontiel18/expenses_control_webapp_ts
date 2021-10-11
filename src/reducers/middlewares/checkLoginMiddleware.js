@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { history } from '../../store';
 
-import { setUser } from '../userSlice';
+import { setUserDataFromStorage } from '../signSlice';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -11,16 +11,16 @@ const checkLoginMiddleware = (store) => (next) => (action) => {
   let flag = false;
 
   if (storedUserData && storedUserData.token) {
-    const { profile } = store.getState().user;
+    const { userData } = store.getState().sign;
 
-    if (!profile || !profile.token) {
+    if (!userData || !userData.token) {
       flag = true;
       next(action);
-      store.dispatch(setUser(storedUserData));
+      store.dispatch(setUserDataFromStorage(storedUserData));
     }
   }
 
-  const userData = store.getState().user && store.getState().user.profile;
+  const userData = store.getState().sign && store.getState().sign.userData;
 
   const { location } = store.getState().router;
   if (!flag) next(action);

@@ -7,7 +7,6 @@ import { getUserIncomes } from '../../actions/incomeActions';
 import { getUserCategoriesByType } from '../../actions/categoryActions';
 import { categorySelector } from '../../reducers/categorySlice';
 import { incomeSelector, resetIncomeError } from '../../reducers/incomeSlice';
-import { userSelector } from '../../reducers/userSlice';
 import { RootState, useAppDispatch } from '../../store';
 
 import NoCategoriesMsg from '../Categories/NoCategoriesMsg/NoCategoriesMsg';
@@ -18,12 +17,11 @@ import { Link } from 'react-router-dom';
 
 const Incomes = () => {
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
-  const { profile } = useSelector(userSelector);
   const { categories } = useSelector(categorySelector);
   const { incomeErrors, incomes } = useSelector(incomeSelector);
 
   useEffect(() => {
-    dispatch(getUserCategoriesByType(2, profile.token));
+    dispatch(getUserCategoriesByType(2));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -76,7 +74,7 @@ const Incomes = () => {
       toNumber = endDate.setHours(23, 59, 59, 0);
     }
 
-    dispatch(getUserIncomes(profile.token, fromNumber, toNumber));
+    dispatch(getUserIncomes(fromNumber, toNumber));
   };
 
   const renderErrors = () => {
@@ -87,7 +85,7 @@ const Incomes = () => {
 
   const renderIncomeList = () => {
     if (!incomes || incomes.length < 1) return <NoResultsTable />;
-    return <IncomeList categories={categories} incomes={incomes} userToken={profile.token} />;
+    return <IncomeList categories={categories} incomes={incomes} />;
   };
 
   const searchIncome = (_mode: string, _endDate: Date, _startDate: Date, _startMonth: Date) => {

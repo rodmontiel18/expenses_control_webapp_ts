@@ -18,11 +18,13 @@ import EditIncome from '../components/Incomes/EditIncome/EditIncome';
 import Expenses from '../components/Expenses/Expenses';
 import AddExpense from '../components/Expenses/AddExpense/AddExpense';
 import EditExpense from '../components/Expenses/EditExpense/EditExpense';
+import MyAccount from '../components/MyAccount/MyAccount';
 
 const Routes = () => {
   return (
     <Switch>
       <Route exact path="/" component={Dashboard} />
+      <Route exact path="/dashboard" component={Dashboard} />
       <Route exact path="/categories" component={Categories} />
       <Route exact path="/categories/add" component={AddCategory} />
       <Route exact path="/categories/edit/:id" component={EditCategory} />
@@ -33,6 +35,7 @@ const Routes = () => {
       <Route exact path="/incomes/add" component={AddIncome} />
       <Route exact path="/incomes/edit/:id" component={EditIncome} />
       <Route exact path="/dashboard" component={Dashboard} />
+      <Route exact path="/my-account" component={MyAccount} />
       <Route exact path="/signup">
         <Login>
           <NewUserForm />

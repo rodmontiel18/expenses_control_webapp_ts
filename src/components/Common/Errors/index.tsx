@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit';
-import { FC, ReactElement, useEffect } from 'react';
+import { Dispatch, FC, ReactElement, SetStateAction, useEffect } from 'react';
 import { Alert } from 'react-bootstrap';
 
 export const NoResultsTable: FC = (): ReactElement => {
@@ -43,15 +42,15 @@ export const SimpleError: FC<SimpleErrorProps> = ({ callbackFn, errors, timeout 
 };
 
 interface SimpleClosableErrorProps {
-  onCloseFn?: ActionCreatorWithoutPayload;
-  errors: string[];
+  onCloseFn?: Dispatch<SetStateAction<string[] | null>>;
+  errors: string[] | undefined;
 }
 
 export const SimpleClosableError: FC<SimpleClosableErrorProps> = ({ onCloseFn, errors }): ReactElement => {
   if (!errors || errors.length < 1) return <></>;
 
   const handleOnClose = (): void => {
-    if (onCloseFn) onCloseFn();
+    if (onCloseFn) onCloseFn(null);
   };
 
   return (

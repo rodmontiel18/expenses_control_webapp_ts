@@ -5,10 +5,9 @@ import { Category } from '../../../models/category';
 
 interface ListCategoriesProps {
   categories: Category[];
-  userToken: string;
 }
 
-const ListCategories: FC<ListCategoriesProps> = ({ categories, userToken }): ReactElement => {
+const ListCategories: FC<ListCategoriesProps> = ({ categories }): ReactElement => {
   return (
     <div className="table-responsive">
       <table className="table table-sm table-bordered table-hover">
@@ -22,7 +21,7 @@ const ListCategories: FC<ListCategoriesProps> = ({ categories, userToken }): Rea
         </thead>
         <tbody>
           {categories.map((category: Category) => (
-            <CategoryComponent key={category.id} category={category} userToken={userToken} />
+            <CategoryComponent key={category.id} category={category} />
           ))}
         </tbody>
       </table>

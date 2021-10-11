@@ -19,7 +19,6 @@ const initialUser = {
   lastname: '',
   name: '',
   password: '',
-  token: '',
 };
 
 const initialState: UserState = {
@@ -35,11 +34,28 @@ export const userSlice = createSlice({
   name: 'user',
   reducers: {
     getProfileRq: (state: UserState) => {
-      state.profile = { ...initialUser };
+      state.profile = {
+        ...state.profile,
+        birthday: initialUser.birthday,
+        email: initialUser.email,
+        genre: initialUser.genre,
+        id: initialUser.id,
+        lastname: initialUser.lastname,
+        name: initialUser.name,
+        password: initialUser.password,
+      };
       state.userErrors = undefined;
     },
     getProfileSuccess: (state: UserState, action: PayloadAction<User>) => {
-      state.profile = action.payload;
+      const newProfile: User = action.payload;
+      state.profile = {
+        ...state.profile,
+        birthday: newProfile.birthday,
+        email: newProfile.email,
+        genre: newProfile.genre,
+        lastname: newProfile.lastname,
+        name: newProfile.name,
+      };
       state.userErrors = undefined;
     },
     resetPasswordRq: (state: UserState) => {
@@ -63,11 +79,11 @@ export const userSlice = createSlice({
     updateProfileSuccess: (state: UserState) => {
       state.updateProfileRqFlag = true;
     },
-    updatePqsswordRq: (state: UserState) => {
+    updatePasswordRq: (state: UserState) => {
       state.updatePasswordRqFlag = false;
       state.userErrors = undefined;
     },
-    updatePqsswordSuccess: (state: UserState) => {
+    updatePasswordSuccess: (state: UserState) => {
       state.updatePasswordRqFlag = true;
       state.userErrors = undefined;
     },
@@ -88,8 +104,8 @@ export const {
   setUser,
   updateProfileRq,
   updateProfileSuccess,
-  updatePqsswordRq,
-  updatePqsswordSuccess,
+  updatePasswordRq,
+  updatePasswordSuccess,
   userError,
 } = userSlice.actions;
 

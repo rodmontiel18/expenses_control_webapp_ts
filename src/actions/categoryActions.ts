@@ -29,17 +29,12 @@ import { handleRequestError } from '../utilities/util';
 const url = '/categories';
 
 export const addCategory =
-  (category: Category, history: History, userToken: string): AppThunk =>
+  (category: Category, history: History): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + userToken,
-      },
-    };
     dispatch(setSpinnerVisibility(true));
     dispatch(addCategoryRq());
     try {
-      const response: AxiosResponse<AddUserCategoryRs> = await axios.post<AddUserCategoryRs>(url, category, options);
+      const response: AxiosResponse<AddUserCategoryRs> = await axios.post<AddUserCategoryRs>(url, category);
       if (handleRequestError(response, dispatch, categoryError)) {
         dispatch(addCategorySuccess());
         history.push('/categories');
@@ -52,17 +47,12 @@ export const addCategory =
   };
 
 export const delCategory =
-  (id: number, userToken: string): AppThunk =>
+  (id: number): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + userToken,
-      },
-    };
     dispatch(setSpinnerVisibility(true));
     dispatch(delCategoryRq());
     try {
-      const response: AxiosResponse<BaseResponse> = await axios.delete<BaseResponse>(`${url}/user/${id}`, options);
+      const response: AxiosResponse<BaseResponse> = await axios.delete<BaseResponse>(`${url}/user/${id}`);
       if (handleRequestError(response, dispatch, categoryError)) {
         dispatch(delCategorySuccess(id));
       }
@@ -74,21 +64,12 @@ export const delCategory =
   };
 
 export const editCategory =
-  (category: Category, history: History, userToken: string): AppThunk =>
+  (category: Category, history: History): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + userToken,
-      },
-    };
     dispatch(setSpinnerVisibility(true));
     dispatch(editCategoryRq());
     try {
-      const response: AxiosResponse<AddUserCategoryRs> = await axios.put<AddUserCategoryRs>(
-        `${url}/user`,
-        category,
-        options,
-      );
+      const response: AxiosResponse<AddUserCategoryRs> = await axios.put<AddUserCategoryRs>(`${url}/user`, category);
       if (handleRequestError(response, dispatch, categoryError)) {
         dispatch(editCategorySuccess());
         history.push('/categories');
@@ -100,43 +81,27 @@ export const editCategory =
     }
   };
 
-export const getUserCategories =
-  (userToken: string): AppThunk =>
-  async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + userToken,
-      },
-    };
-    try {
-      dispatch(setSpinnerVisibility(true));
-      dispatch(getUserCategoriesRq());
-      const categories: AxiosResponse<GetUserCategoriesRs> = await axios.get<GetUserCategoriesRs>(
-        `${url}/user`,
-        options,
-      );
-      dispatch(getUserCategoriesSuccess(categories.data.categories));
-    } catch (error) {
-      dispatch(categoryError(['An error has ocurred, try again later']));
-    } finally {
-      dispatch(setSpinnerVisibility(false));
-    }
-  };
+export const getUserCategories = (): AppThunk => async (dispatch: ThunkDispatch<RootState, null, Action>) => {
+  try {
+    dispatch(setSpinnerVisibility(true));
+    dispatch(getUserCategoriesRq());
+    const categories: AxiosResponse<GetUserCategoriesRs> = await axios.get<GetUserCategoriesRs>(`${url}/user`);
+    dispatch(getUserCategoriesSuccess(categories.data.categories));
+  } catch (error) {
+    dispatch(categoryError(['An error has ocurred, try again later']));
+  } finally {
+    dispatch(setSpinnerVisibility(false));
+  }
+};
 
 export const getUserCategoryById =
-  (categoryId: string, userToken: string): AppThunk =>
+  (categoryId: string): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + userToken,
-      },
-    };
     dispatch(setSpinnerVisibility(true));
     dispatch(getUserCategoryByIdRq());
     try {
       const response: AxiosResponse<AddUserCategoryRs> = await axios.get<AddUserCategoryRs>(
         `${url}/user/${categoryId}`,
-        options,
       );
       if (handleRequestError(response, dispatch, categoryError)) {
         dispatch(getUserCategoryByIdSuccess(response.data.category));
@@ -149,17 +114,12 @@ export const getUserCategoryById =
   };
 
 export const getUserCategoriesByType =
-  (categoryType: number, userToken: string): AppThunk =>
+  (categoryType: number): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + userToken,
-      },
-    };
     dispatch(setSpinnerVisibility(true));
     dispatch(getUserCategoriesByTypeRq());
     try {
-      const response = await axios.get<GetUserCategoriesRs>(`${url}/user/type/${categoryType}`, options);
+      const response = await axios.get<GetUserCategoriesRs>(`${url}/user/type/${categoryType}`);
       if (handleRequestError(response, dispatch, categoryError)) {
         dispatch(getUserCategoriesByTypeSuccess(response.data.categories));
       }
