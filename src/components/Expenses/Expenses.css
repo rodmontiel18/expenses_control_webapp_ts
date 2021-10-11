@@ -1,0 +1,18 @@
+.expenses-title {
+    margin: 20px 0 30px 10px;
+    text-align: center;
+}
+
+.content {
+    width: 90%;
+    margin-left: 5%;
+}
+
+.add-button {
+    float: right;
+}
+
+.del-expense-button {
+    text-align: center;
+    margin-right: 5px;
+}

@@ -1,0 +1,23 @@
+.form-group {
+  margin-bottom: 10px;
+}
+
+.profile-container {
+  margin: 0 3% 0 3%;
+  padding: 10px 0 20px 0;
+}
+
+.password-container {
+  margin: 0 3% 20px 3%;
+  padding-top: 20px;
+}
+
+.profile-container .react-datepicker-wrapper {
+  display: block;
+  flex: none;
+  width: auto;
+}
+
+span.error-msg {
+  color: red;
+}
