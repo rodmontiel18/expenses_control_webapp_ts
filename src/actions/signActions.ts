@@ -5,12 +5,12 @@ import { AppThunk, RootState } from '../store';
 import axios from '../utilities/axiosConfig';
 
 import { setSpinnerVisibility } from '../reducers/appSlice';
-import { signInRq, signError, signUpSuccess } from '../reducers/signSlice';
-import { setUser } from '../reducers/userSlice';
+import { signInRq, signInSuccess, signError, signUpSuccess, setUserDataFromAuth } from '../reducers/signSlice';
 import { handleRequestError } from '../utilities/util';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action } from '@reduxjs/toolkit';
-import { LoginRs, SignupRs, User } from '../models/user';
+import { User } from '../models/user';
+import { LoginRs, SignupRs } from '../models/responses/user';
 import { AxiosResponse } from 'axios';
 
 export const githubSign =
@@ -20,7 +20,7 @@ export const githubSign =
     try {
       const response: AxiosResponse<LoginRs> = await axios.get<LoginRs>(`/signin/oauth/github/${code}`);
       if (handleRequestError(response, dispatch, signError)) {
-        dispatch(setUser(response.data));
+        dispatch(setUserDataFromAuth(response.data));
         if (response.data.code !== 119) {
           history.push('/signin');
         }
@@ -48,7 +48,7 @@ export const signIn =
       dispatch(signInRq());
       const response: AxiosResponse<LoginRs> = await axios.get<LoginRs>('/signin', options);
       if (handleRequestError(response, dispatch, signError)) {
-        dispatch(setUser(response.data));
+        dispatch(signInSuccess(response.data));
       }
     } catch (error) {
       dispatch(signError(['An error has ocurred, try again later']));

@@ -7,6 +7,21 @@ const axiosInstance = axios.create({
   baseURL,
 });
 
+axiosInstance.interceptors.request.use(
+  (originalRequestConfig) => {
+    const requestConfig = originalRequestConfig;
+    const storedStrUserData = Cookies.get('userData');
+    const storedUserData = storedStrUserData ? JSON.parse(storedStrUserData) : null;
+    if (storedUserData && storedUserData.token) {
+      requestConfig.headers.Authorization = `Bearer ${storedUserData.token}`;
+    }
+    return requestConfig;
+  },
+  (error) => {
+    Promise.reject(error);
+  },
+);
+
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {

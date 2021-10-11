@@ -1,18 +1,13 @@
-import { BaseResponse } from '../responses/BaseResponse';
-
-export interface User {
-  birthday: string;
+export interface ShortUser {
   email: string;
-  genre: string;
-  id: number;
   lastname: string;
   name: string;
-  password: string;
   token: string;
 }
 
-export interface LoginRs extends BaseResponse, User {}
-
-export interface SignupRs extends BaseResponse {
-  signupMessage: string;
+export interface User extends Omit<ShortUser, 'token'> {
+  birthday: string;
+  genre: string;
+  id: number;
+  password: string;
 }

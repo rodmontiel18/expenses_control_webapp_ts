@@ -11,10 +11,9 @@ import { RootState, useAppDispatch } from '../../../store';
 interface ExpenseProps {
   categories: Category[];
   expense: ExpenseModel;
-  userToken: string;
 }
 
-const Expense: FC<ExpenseProps> = ({ categories, expense, userToken }): ReactElement => {
+const Expense: FC<ExpenseProps> = ({ categories, expense }): ReactElement => {
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
   const category = categories.find((c) => c.id === expense.categoryId);
 
@@ -28,19 +27,20 @@ const Expense: FC<ExpenseProps> = ({ categories, expense, userToken }): ReactEle
     );
 
   const handleDelExpense = (id: number): void => {
-    if (window.confirm('Are you sure you want to delete this item?')) dispatch(delExpense(id, userToken));
+    if (window.confirm('Are you sure you want to delete this item?')) dispatch(delExpense(id));
   };
 
-  const expenseDate = new Intl.DateTimeFormat('es-MX', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).format(new Date(expense.expenseDate));
+  const getExpenseDate = () =>
+    new Intl.DateTimeFormat('es-MX', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(new Date(expense.expenseDate));
 
   return (
     <tr className="data-info">
       <td>
-        <p>{expenseDate}</p>
+        <p>{getExpenseDate()}</p>
       </td>
       <td>
         <p>{expense.description}</p>

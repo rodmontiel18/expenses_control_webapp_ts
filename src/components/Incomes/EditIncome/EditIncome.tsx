@@ -9,7 +9,6 @@ import { getUserCategoriesByType } from '../../../actions/categoryActions';
 import { getIncomeById } from '../../../actions/incomeActions';
 import { categorySelector } from '../../../reducers/categorySlice';
 import { incomeSelector } from '../../../reducers/incomeSlice';
-import { userSelector } from '../../../reducers/userSlice';
 import { RootState, useAppDispatch } from '../../../store';
 
 import IncomeForm from '../IncomeForm/IncomeForm';
@@ -24,20 +23,18 @@ const EditIncome: FC = (): ReactElement => {
   const match: match<MatchProps> | null = useRouteMatch<MatchProps>('/incomes/edit/:id');
   const history: History = useHistory();
 
-  const { profile } = useSelector(userSelector);
   const { categories } = useSelector(categorySelector);
   const { income, incomeErrors } = useSelector(incomeSelector);
 
   useEffect(() => {
-    dispatch(getUserCategoriesByType(2, profile.token));
+    dispatch(getUserCategoriesByType(2));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     const incomeId = match?.params.id;
     const numberIncomeId = parseInt(incomeId || '0');
-    if (categories && categories.length > 0 && incomeId && !income)
-      dispatch(getIncomeById(numberIncomeId, profile.token));
+    if (categories && categories.length > 0 && incomeId && !income) dispatch(getIncomeById(numberIncomeId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categories]);
 
@@ -56,7 +53,6 @@ const EditIncome: FC = (): ReactElement => {
           history={history}
           income={income}
           incomeErrors={incomeErrors}
-          userToken={profile.token}
         />
       </div>
     </div>

@@ -9,7 +9,6 @@ import { getUserCategoriesByType } from '../../../actions/categoryActions';
 import { getExpenseById } from '../../../actions/expenseActions';
 import { categorySelector } from '../../../reducers/categorySlice';
 import { expenseSelector } from '../../../reducers/expensesSlice';
-import { userSelector } from '../../../reducers/userSlice';
 import { RootState, useAppDispatch } from '../../../store';
 
 import ExpenseForm from '../ExpenseForm/ExpenseForm';
@@ -26,18 +25,17 @@ const EditExpense: FC = (): ReactElement => {
   const history: History = useHistory();
   const match: match<MatchProps> | null = useRouteMatch<MatchProps>('/expenses/edit/:id');
   const { categories } = useSelector(categorySelector);
-  const { profile } = useSelector(userSelector);
   const { expense, expenseErrors } = useSelector(expenseSelector);
 
   useEffect(() => {
-    dispatch(getUserCategoriesByType(1, profile.token));
+    dispatch(getUserCategoriesByType(1));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     const id = match?.params.id;
     if (categories && categories.length > 0 && id && !expense) {
-      dispatch(getExpenseById(id, profile.token));
+      dispatch(getExpenseById(id));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categories]);
@@ -59,7 +57,6 @@ const EditExpense: FC = (): ReactElement => {
           expense={expense}
           expenseErrors={expenseErrors || []}
           history={history}
-          userToken={profile.token}
         />
       </div>
     </div>

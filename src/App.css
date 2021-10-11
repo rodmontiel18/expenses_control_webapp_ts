@@ -32,6 +32,7 @@ body,
 }
 
 .card-container {
+  border-radius: 1rem;
   box-shadow: -5px 5px 15px #000;
   margin: 40px 10% 3% 10%;
   margin-bottom: 20px;

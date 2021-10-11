@@ -20,21 +20,17 @@ import { BaseResponse } from '../models/responses/BaseResponse';
 import { AddIncomeRs, GetUserIncomesRs } from '../models/responses/income';
 import { Income } from '../models/income';
 import { History } from 'history';
+import { AxiosRequestConfig } from 'axios';
 
 const url = '/incomes';
 
 export const addIncome =
-  (income: Income, history: History, userToken: string): AppThunk =>
+  (income: Income, history: History): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + userToken,
-      },
-    };
     dispatch(setSpinnerVisibility(true));
     dispatch(addIncomeRq());
     try {
-      const response = await axios.post<AddIncomeRs>(url, income, options);
+      const response = await axios.post<AddIncomeRs>(url, income);
       if (handleRequestError(response, dispatch, incomeError)) {
         dispatch(addIncomeSuccess());
         history.push('/incomes');
@@ -47,17 +43,12 @@ export const addIncome =
   };
 
 export const delIncome =
-  (id: number, userToken: string): AppThunk =>
+  (id: number): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + userToken,
-      },
-    };
     dispatch(setSpinnerVisibility(true));
     dispatch(delIncomerq());
     try {
-      const response = await axios.delete<BaseResponse>(`${url}/user/${id}`, options);
+      const response = await axios.delete<BaseResponse>(`${url}/user/${id}`);
       if (handleRequestError(response, dispatch, incomeError)) {
         dispatch(delIncomeSuccess(id));
       }
@@ -69,17 +60,12 @@ export const delIncome =
   };
 
 export const editIncome =
-  (income: Income, history: History, userToken: string): AppThunk =>
+  (income: Income, history: History): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + userToken,
-      },
-    };
     dispatch(setSpinnerVisibility(true));
     dispatch(editIncomeRq());
     try {
-      const response = await axios.put<AddIncomeRs>(`${url}/user`, income, options);
+      const response = await axios.put<AddIncomeRs>(`${url}/user`, income);
       if (handleRequestError(response, dispatch, incomeError)) {
         dispatch(editIncomeSuccess());
         history.push('/incomes');
@@ -92,17 +78,12 @@ export const editIncome =
   };
 
 export const getIncomeById =
-  (id: number, userToken: string): AppThunk =>
+  (id: number): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + userToken,
-      },
-    };
     dispatch(setSpinnerVisibility(true));
     dispatch(getIncomeByIdRq());
     try {
-      const response = await axios.get<AddIncomeRs>(`${url}/user/${id}`, options);
+      const response = await axios.get<AddIncomeRs>(`${url}/user/${id}`);
       if (handleRequestError(response, dispatch, incomeError)) {
         dispatch(getIncomeByIdSuccess(response.data.income));
       }
@@ -114,17 +95,18 @@ export const getIncomeById =
   };
 
 export const getUserIncomes =
-  (userToken: string, from: number, to: number): AppThunk =>
+  (from: number, to: number): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + userToken,
+    const options: AxiosRequestConfig = {
+      params: {
+        from,
+        to,
       },
     };
     dispatch(setSpinnerVisibility(true));
     dispatch(getUserIncomesRq());
     try {
-      const response = await axios.get<GetUserIncomesRs>(`${url}/user/range/${from}/${to}`, options);
+      const response = await axios.get<GetUserIncomesRs>(`${url}/user/range`, options);
       if (handleRequestError(response, dispatch, incomeError)) {
         dispatch(getUserIncomesSuccess(response.data.incomes));
       }

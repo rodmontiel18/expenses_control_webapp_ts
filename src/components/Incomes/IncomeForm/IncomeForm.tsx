@@ -29,17 +29,9 @@ interface IncomeFormProps {
   history: History;
   income?: Income;
   incomeErrors?: string[];
-  userToken: string;
 }
 
-const IncomeForm: FC<IncomeFormProps> = ({
-  actionForm,
-  categories,
-  history,
-  income,
-  incomeErrors,
-  userToken,
-}): ReactElement => {
+const IncomeForm: FC<IncomeFormProps> = ({ actionForm, categories, history, income, incomeErrors }): ReactElement => {
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
 
   const [amount, setAmount] = useState<string>('');
@@ -105,7 +97,7 @@ const IncomeForm: FC<IncomeFormProps> = ({
   };
 
   const handleChangeDate = (date: Date): void => {
-    setIncomeDate(date);
+    setIncomeDate(new Date(date.setHours(0, 0, 0, 0)));
   };
 
   const getIncome = (): Income => {
@@ -113,7 +105,7 @@ const IncomeForm: FC<IncomeFormProps> = ({
       amount: parseInt(amount),
       categoryId: parseInt(category),
       description,
-      incomeDate,
+      incomeDate: incomeDate.getTime(),
       id: 0,
       userId: 0,
     };
@@ -164,10 +156,10 @@ const IncomeForm: FC<IncomeFormProps> = ({
     if (!validateForm()) return false;
 
     if (actionForm === 'add') {
-      dispatch(addIncome(lIncome, history, userToken));
+      dispatch(addIncome(lIncome, history));
     } else if (income) {
       lIncome.id = income.id;
-      dispatch(editIncome(lIncome, history, userToken));
+      dispatch(editIncome(lIncome, history));
     }
   };
 

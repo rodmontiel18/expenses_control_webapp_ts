@@ -7,7 +7,6 @@ import { getAllExpenses } from '../../actions/expenseActions';
 import { getUserCategoriesByType } from '../../actions/categoryActions';
 import { categorySelector } from '../../reducers/categorySlice';
 import { expenseSelector, resetExpenseErrors } from '../../reducers/expensesSlice';
-import { userSelector } from '../../reducers/userSlice';
 
 import DatesContainer from '../Common/DatesContainer/DatesContainer';
 import ExpenseList from './ExpenseList/ExpenseList';
@@ -20,18 +19,11 @@ import { RootState, useAppDispatch } from '../../store';
 
 const Expenses: FC = (): ReactElement => {
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
-  const { profile } = useSelector(userSelector);
   const { categories } = useSelector(categorySelector);
   const { expenses, expenseErrors } = useSelector(expenseSelector);
 
-  /* const _tempDate = new Date().getTime();
-  const [endDate, setEndDate] = useState(_tempDate);
-  const [mode, setMode] = useState('month');
-  const [startDate, setStartDate] = useState(_tempDate);
-  const [startMonth, setStartMonth] = useState(_tempDate); */
-
   useEffect(() => {
-    dispatch(getUserCategoriesByType(1, profile.token));
+    dispatch(getUserCategoriesByType(1));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -54,10 +46,6 @@ const Expenses: FC = (): ReactElement => {
             new Date(datesFormData.values.startDate),
             new Date(datesFormData.values.startMonth),
           );
-          /* setEndDate(datesFormData.values.endDate);
-          setMode(datesFormData.mode);
-          setStartDate(datesFormData.values.startDate);
-          setStartMonth(datesFormData.values.startMonth); */
           localStorage.removeItem('datesFormData');
         }
       } else callGetExpensesRq('month', undefined, undefined, new Date());
@@ -82,31 +70,14 @@ const Expenses: FC = (): ReactElement => {
       to = new Date(from);
       to.setMonth(to.getMonth() + 1);
       to.setDate(to.getDate() - 1);
-      fromNumber = from.getTime();
-      toNumber = to.getTime();
+      fromNumber = from.setHours(0, 0, 0, 0);
+      toNumber = to.setHours(23, 59, 59, 0);
     } else if (startDate && endDate) {
-      fromNumber = startDate.getTime();
-      toNumber = endDate.getTime();
+      fromNumber = startDate.setHours(0, 0, 0, 0);
+      toNumber = endDate.setHours(23, 59, 59, 0);
     }
-    dispatch(getAllExpenses(fromNumber, toNumber, profile.token));
+    dispatch(getAllExpenses(fromNumber, toNumber));
   };
-
-  /* const goExpenseForm = (e, expenseId) => {
-    e.preventDefault();
-    const _tempData = {
-      mode,
-      values: {
-        endDate,
-        startDate,
-        startMonth,
-      },
-    };
-
-    localStorage.setItem('datesFormData', JSON.stringify(_tempData));
-
-    if (expenseId) history.push(`/expenses/edit/${expenseId}`);
-    else history.push('/expenses/add');
-  }; */
 
   const renderExpenseErrors = (): JSX.Element => {
     if (!expenses || expenses.length < 1)
@@ -117,14 +88,10 @@ const Expenses: FC = (): ReactElement => {
   const renderExpenseList = (): JSX.Element => {
     if (!expenses || expenses.length < 1) return <NoResultsTable />;
 
-    return <ExpenseList categories={categories} expenses={expenses} userToken={profile.token} />;
+    return <ExpenseList categories={categories} expenses={expenses} />;
   };
 
   const searchExpenses = (_mode: string, _endDate: Date, _startDate: Date, _startMonth: Date): void => {
-    /* setEndDate(_endDate.getTime());
-    setMode(_mode);
-    setStartDate(_startDate.getTime());
-    setStartMonth(_startMonth.getTime()); */
     callGetExpensesRq(_mode, _endDate, _startDate, _startMonth);
   };
 

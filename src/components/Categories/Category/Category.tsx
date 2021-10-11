@@ -9,15 +9,13 @@ import { Category as CategoryModel } from '../../../models/category';
 
 interface CategoryProps {
   category: CategoryModel;
-  userToken: string;
 }
 
-const Category: FC<CategoryProps> = ({ category, userToken }): ReactElement => {
+const Category: FC<CategoryProps> = ({ category }): ReactElement => {
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
 
   const handleDelCategory = (id: number): void => {
-    if (window.confirm('Are you sure you want to delete this item?') && delCategory != null)
-      dispatch(delCategory(id, userToken));
+    if (window.confirm('Are you sure you want to delete this item?') && delCategory != null) dispatch(delCategory(id));
   };
 
   return (

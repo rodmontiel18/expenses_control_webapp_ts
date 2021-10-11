@@ -11,10 +11,9 @@ import { Income as IncomeModel } from '../../../models/income';
 interface IncomeProps {
   categories: Category[];
   income: IncomeModel;
-  userToken: string;
 }
 
-const Income: FC<IncomeProps> = ({ categories, income, userToken }): ReactElement => {
+const Income: FC<IncomeProps> = ({ categories, income }): ReactElement => {
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
   const category = categories.find((c) => c.id === income.categoryId);
 
@@ -28,19 +27,20 @@ const Income: FC<IncomeProps> = ({ categories, income, userToken }): ReactElemen
     );
 
   const handleDelIncome = (id: number) => {
-    if (window.confirm('Estas seguro de que deseas eliminar este ingreso?')) dispatch(delIncome(id, userToken));
+    if (window.confirm('Estas seguro de que deseas eliminar este ingreso?')) dispatch(delIncome(id));
   };
 
-  const incomeDate = new Intl.DateTimeFormat('es-MX', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).format(new Date(income.incomeDate));
+  const getIncomeDate = () =>
+    new Intl.DateTimeFormat('es-MX', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(new Date(income.incomeDate));
 
   return (
     <tr className="data-info">
       <td>
-        <p>{incomeDate}</p>
+        <p>{getIncomeDate()}</p>
       </td>
       <td>
         <p>{income.description}</p>

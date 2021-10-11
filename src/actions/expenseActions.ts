@@ -22,21 +22,17 @@ import {
 } from '../reducers/expensesSlice';
 import { BaseResponse } from '../models/responses/BaseResponse';
 import { EditExpenseSuccessRs, GetAllExpensesRS } from '../models/responses/expense';
+import { AxiosRequestConfig } from 'axios';
 
 const url = '/expenses';
 
 export const addExpense =
-  (expense: Expense, history: History, userToken: string): AppThunk =>
+  (expense: Expense, history: History): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + userToken,
-      },
-    };
     dispatch(setSpinnerVisibility(true));
     dispatch(addExpenseRq());
     try {
-      const response = await axios.post(url, expense, options);
+      const response = await axios.post(url, expense);
       if (handleRequestError(response, dispatch, expensesError)) {
         dispatch(addExpenseSuccess());
         history.push('/expenses');
@@ -49,17 +45,12 @@ export const addExpense =
   };
 
 export const delExpense =
-  (id: number, userToken: string): AppThunk =>
+  (id: number): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + userToken,
-      },
-    };
     dispatch(setSpinnerVisibility(true));
     dispatch(delExpenseRq());
     try {
-      const response = await axios.delete<BaseResponse>(`${url}/user/${id}`, options);
+      const response = await axios.delete<BaseResponse>(`${url}/user/${id}`);
       if (handleRequestError(response, dispatch, expensesError)) {
         dispatch(delExpenseSuccess(id));
       }
@@ -71,17 +62,12 @@ export const delExpense =
   };
 
 export const editExpense =
-  (expense: Expense, history: History, userToken: string): AppThunk =>
+  (expense: Expense, history: History): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + userToken,
-      },
-    };
     dispatch(setSpinnerVisibility(true));
     dispatch(editExpenseRq());
     try {
-      const response = await axios.put<EditExpenseSuccessRs>(`${url}/user`, expense, options);
+      const response = await axios.put<EditExpenseSuccessRs>(`${url}/user`, expense);
       if (handleRequestError(response, dispatch, expensesError)) {
         dispatch(editExpenseSuccess());
         history.push('/expenses');
@@ -94,17 +80,18 @@ export const editExpense =
   };
 
 export const getAllExpenses =
-  (from: number, to: number, userToken: string): AppThunk =>
+  (from: number, to: number): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + userToken,
+    const options: AxiosRequestConfig = {
+      params: {
+        from,
+        to,
       },
     };
     dispatch(setSpinnerVisibility(true));
     dispatch(getAllExpensesRq());
     try {
-      const response = await axios.get<GetAllExpensesRS>(`${url}/user/range/${from}/${to}`, options);
+      const response = await axios.get<GetAllExpensesRS>(`${url}/user/range`, options);
       if (handleRequestError(response, dispatch, expensesError)) {
         dispatch(getAllExpensesSuccess(response.data.expenses));
       }
@@ -116,17 +103,12 @@ export const getAllExpenses =
   };
 
 export const getExpenseById =
-  (expenseId: string, userToken: string): AppThunk =>
+  (expenseId: string): AppThunk =>
   async (dispatch: ThunkDispatch<RootState, null, Action>) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + userToken,
-      },
-    };
     dispatch(setSpinnerVisibility(true));
     dispatch(getExpenseByIdRq());
     try {
-      const response = await axios.get<EditExpenseSuccessRs>(`${url}/user/${expenseId}`, options);
+      const response = await axios.get<EditExpenseSuccessRs>(`${url}/user/${expenseId}`);
       if (handleRequestError(response, dispatch, expensesError)) {
         dispatch(getExpenseByIdSuccess(response.data.expense));
       }

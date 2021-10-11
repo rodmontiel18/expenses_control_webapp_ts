@@ -8,7 +8,6 @@ import { History } from 'history';
 import { RootState, useAppDispatch } from '../../store';
 import { getUserCategories } from '../../actions/categoryActions';
 import { categorySelector, resetCategoryErrors } from '../../reducers/categorySlice';
-import { userSelector } from '../../reducers/userSlice';
 
 import ListCategories from './ListCategories/ListCategories';
 import { NoResultsTable, SimpleError } from '../Common/Errors';
@@ -19,11 +18,10 @@ const Categories: FC = (): ReactElement => {
   const dispatch: ThunkDispatch<RootState, null, Action> = useAppDispatch();
   const history: History = useHistory();
 
-  const { profile } = useSelector(userSelector);
   const { categories, categoryErrors } = useSelector(categorySelector);
 
   useEffect(() => {
-    dispatch(getUserCategories(profile.token));
+    dispatch(getUserCategories());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -39,7 +37,7 @@ const Categories: FC = (): ReactElement => {
 
   const renderCategoryList = () => {
     if (!categories || categories.length < 1) return <NoResultsTable />;
-    return <ListCategories categories={categories} userToken={profile.token} />;
+    return <ListCategories categories={categories} />;
   };
 
   return (

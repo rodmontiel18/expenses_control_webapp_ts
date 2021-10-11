@@ -7,7 +7,6 @@ import { History } from 'history';
 
 import { setSpinnerVisibility } from '../../../reducers/appSlice';
 import { categorySelector } from '../../../reducers/categorySlice';
-import { userSelector } from '../../../reducers/userSlice';
 import { RootState, useAppDispatch } from '../../../store';
 
 import CategoryForm from '../CategoryForm/CategoryForm';
@@ -18,7 +17,6 @@ const AddCategory: FC = (): ReactElement => {
   const history: History = useHistory();
 
   const { categoryErrors } = useSelector(categorySelector);
-  const { profile } = useSelector(userSelector);
 
   useEffect(function () {
     dispatch(setSpinnerVisibility(false));
@@ -31,7 +29,7 @@ const AddCategory: FC = (): ReactElement => {
         <div style={{ borderBottom: 'solid 1px lightgray' }}>
           <h1 className="h3 font-weight-bold text-center">Add new category</h1>
         </div>
-        <CategoryForm actionForm="add" categoryErrors={categoryErrors} history={history} userToken={profile.token} />
+        <CategoryForm actionForm="add" categoryErrors={categoryErrors} history={history} />
       </div>
     </div>
   );
